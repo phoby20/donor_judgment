@@ -911,7 +911,7 @@ FullTextSearch.prototype = {
             // }
             // buf   += "</div>";
 
-            buf   += "<div class='ten columns text-block'>";
+            buf   += "<div class='nine columns text-block'>";
 
             buf   += "<dl>";
 
@@ -942,56 +942,56 @@ FullTextSearch.prototype = {
             //     buf += "<p class=" + '"age"'+ ">"+ d.age +"</p>";
             // }
 
-            buf += "<p class='itemkey'>";
-            buf += "<span class='itemkey-head'>[項目]</span>";
-            if (d.class1) {
-                buf += "<span class='itemkey-data'>" + d.class1 + "</span>";
-            } else {
-                buf += "<span class='itemkey-data'> ― </span>";
-            }
-            buf += "</p>";
+            // buf += "<p class='itemkey'>";
+            // buf += "<span class='itemkey-head'>[項目]</span>";
+            // if (d.class1) {
+            //     buf += "<span class='itemkey-data'>" + d.class1 + "</span>";
+            // } else {
+            //     buf += "<span class='itemkey-data'> ― </span>";
+            // }
+            // buf += "</p>";
 
             buf += "<p class='info'>";
-            buf += "<span class='info-head'>[PBSCH]</span>";
+            // buf += "<span class='info-head'>[PBSCH]</span>";
 
-            if (d.state) {
-                buf += "<span class='info-data'>" + d.state + "</span>";
-            } else {
-                buf += "<span class='info-data'> ― </span>";
-            }
+            // if (d.state) {
+            //     buf += "<span class='info-data'>" + d.state + "</span>";
+            // } else {
+            //     buf += "<span class='info-data'> ― </span>";
+            // }
 
-            buf += "<span class='info-head'>[BMH]</span>";
+            // buf += "<span class='info-head'>[BMH]</span>";
 
-            if (d.type) {
-                buf += "<span class='info-data'>" + d.type + "</span>";
-            } else {
-                buf += "<span class='info-data'> ― </span>";
-            }
+            // if (d.type) {
+            //     buf += "<span class='info-data'>" + d.type + "</span>";
+            // } else {
+            //     buf += "<span class='info-data'> ― </span>";
+            // }
 
-            buf += "<span class='info-head'>[大分類]</span>";
+            buf += "<span class='info-head'>[区分1]</span>";
             if (d.class1) {
                 buf += "<span class='info-data'>" + d.class1 + "</span>";
             } else {
                 buf += "<span class='info-data'> ― </span>";
             }
-            buf += "<span class='info-head'>[中分類]</span>";
+            buf += "<span class='info-head'>[区分2]</span>";
             if (d.class2) {
                 buf += "<span class='info-data'>" + d.class2 + "</span>";
             } else {
                 buf += "<span class='info-data'> ― </span>";
             }
-            buf += "<span class='info-head'>[小分類]</span>";
-            if (d.class3) {
-                buf += "<span class='info-data'>" + d.class3 + "</span>";
-            } else {
-                buf += "<span class='info-data'> ― </span>";
-            }
-            buf += "<span class='info-head'>[配架場所]</span>";
-            if (d.place) {
-                buf += "<span class='info-data'>" + d.place + "</span>";
-            } else {
-                buf += "<span class='info-data'> ― </span>";
-            }
+            // buf += "<span class='info-head'>[小分類]</span>";
+            // if (d.class3) {
+            //     buf += "<span class='info-data'>" + d.class3 + "</span>";
+            // } else {
+            //     buf += "<span class='info-data'> ― </span>";
+            // }
+            // buf += "<span class='info-head'>[配架場所]</span>";
+            // if (d.place) {
+            //     buf += "<span class='info-data'>" + d.place + "</span>";
+            // } else {
+            //     buf += "<span class='info-data'> ― </span>";
+            // }
 
             buf += "</p>";
 
@@ -1008,11 +1008,20 @@ FullTextSearch.prototype = {
 
 
             // ここからが判定結果表示
-            buf   += "<div class='two columns thumbnail-block'>";
+            buf   += "<div class='three columns thumbnail-block'>";
             buf += "<p class='info'>";
             buf += "<span class='info-head'>[PBSCH]</span>";
             if (d.state) {
                 buf += "<span class='info-data'>" + d.state + "</span>";
+            } else {
+                buf += "<span class='info-data'> ― </span>";
+            }
+            buf += "</p>";
+
+            buf += "<p class='info'>";
+            buf += "<span class='info-head'>[BMH]</span>";
+            if (d.type) {
+                buf += "<span class='info-data'>" + d.type + "</span>";
             } else {
                 buf += "<span class='info-data'> ― </span>";
             }
