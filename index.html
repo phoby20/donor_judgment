@@ -43,19 +43,19 @@ var showFilterValue = document.getElementById("showFilter");
 
 
     // 全体選択機能
-    window.onload = function(){
-        var hobbyAllBtn = document.getElementById('SelectAllBtn');
+    // window.onload = function(){
+    //     var hobbyAllBtn = document.getElementById('SelectAllBtn');
 
-        hobbyAllBtn.addEventListener('click', function(){
-            checkedAll('refine1');
-        });
+    //     hobbyAllBtn.addEventListener('click', function(){
+    //         checkedAll('refine1');
+    //     });
 
-        function checkedAll(checkType){
-            for(var i = 0; i < document.getElementsByName(checkType).length; i++){
-                document.getElementsByName(checkType)[i].checked = true;
-            }
-        }
-    }
+    //     function checkedAll(checkType){
+    //         for(var i = 0; i < document.getElementsByName(checkType).length; i++){
+    //             document.getElementsByName(checkType)[i].checked = true;
+    //         }
+    //     }
+    // }
     
 
     // 検索ボタン押下時処理
@@ -85,7 +85,7 @@ var showFilterValue = document.getElementById("showFilter");
 
 
         
-        // キーワード
+        // BMH
         // mainKeyword2 = document.forms.sitesearch.inkeyword.value;
         var allKeyword2 = "";
         var len2 = document.sitesearch.chkBox_bmh.length;
@@ -102,6 +102,27 @@ var showFilterValue = document.getElementById("showFilter");
         // allKeyword += mainKeyword2;
         // console.log(len);
         document.getElementById('sendKey2').value = allKeyword2;
+
+
+
+
+
+        // PBSCH
+        var allKeyword3 = "";
+        var len3 = document.sitesearch.chkBox_pbsch.length;
+        if ((len3 === undefined) && (document.sitesearch.chkBox_pbsch.checked == true)) {
+            chkdata3[i] = document.sitesearch.chkBox_pbsch[i].value;
+            allKeyword3 = "　";
+        } else {
+            for (i = 0; i < len3; i++) {
+                if (document.sitesearch.chkBox_pbsch[i].checked) {
+                    allKeyword3 += document.sitesearch.chkBox_pbsch[i].value + "　";
+                }
+            }
+        }
+        document.getElementById('sendKey3').value = allKeyword3;
+
+        
 
 
             return true;
@@ -251,13 +272,13 @@ var showFilterValue = document.getElementById("showFilter");
                         <li><label><input type="checkbox" name="chkBox" value="周年史制作"><span> 周年史制作</span></label></li>
                         <li><label><input type="checkbox" name="chkBox" value="周年記念行事"><span> 周年記念行事</span></label></li>
                     </ul> -->
-                    <p class="keyword-category">BMH</p>
+                    <!-- <p class="keyword-category">BMH</p>
                     <ul class="checkList">
                         <li><label><input type="checkbox" name="chkBox_bmh" value="A"><span> A</span></label></li>
                         <li><label><input type="checkbox" name="chkBox_bmh" value="B"><span> B</span></label></li>
                         <li><label><input type="checkbox" name="chkBox_bmh" value="C"><span> C</span></label></li>
                         <li><label><input type="checkbox" name="chkBox_bmh" value="D"><span> D</span></label></li>
-                    </ul>
+                    </ul> -->
                     <!-- <p class="keyword-category">PBSCH</p>
                     <ul class="checkList">
                         <li><label><input type="checkbox" name="chkBox" value="A"><span> A</span></label></li>
@@ -308,7 +329,43 @@ var showFilterValue = document.getElementById("showFilter");
 
 
 
-            
+            <div class="row tr"">
+                <div class="three columns th">
+                    <span>BMH (type)</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="D"><span> D</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="E"><span> E</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="F"><span> F</span></label></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div class="row tr">
+                <div class="three columns th">
+                    <span>PBSCH (state)</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <!-- <li><label><input type="button" id="SelectAllBtn" value="Select All"/></label></li> -->
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="D"><span> D</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="E"><span> E</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="F"><span> F</span></label></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- 以下は非表示 -->
             <div class="row tr" style="display: none;">
                 <div class="three columns th">
                     <span>BMH (type)</span>
@@ -347,6 +404,10 @@ var showFilterValue = document.getElementById("showFilter");
                     </ul>
                 </div>
             </div>
+            <!-- ここまでは非表示 -->
+
+
+
 
         </div>
         <!-- /.form-block -->
@@ -355,7 +416,8 @@ var showFilterValue = document.getElementById("showFilter");
             <button title="検索" type="submit" class="formbtn large" name="submit2" onclick="onSearchClick();">検　索</button>
         </div>
         <input id="sendKey" type="hidden" name="keyword" value="">
-        <input id="sendKey2" type="text" name="bmh" value="">
+        <input id="sendKey2" type="hidden" name="bmh" value="">
+        <input id="sendKey3" type="hidden" name="pbsch" value="">
     </form>
 
 

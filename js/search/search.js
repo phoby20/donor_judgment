@@ -37,8 +37,11 @@ function FullTextSearch()
 
     this.charset    = 'UTF-8';
     this.max        = 50;
+
     this.param_name = 'keyword';
-    this.param_name2 = 'bmh';
+    this.param_name2 = 'bmh'; //bmh 検索
+    this.param_name3 = 'pbsch'; //pbsch 検索
+
     this.param_name_refine1 = 'refine1';    //絞り込み用パラメータ（仮）
     this.param_name_refine2 = 'refine2';    //絞り込み用パラメータ（仮）
     this.param_name_yearfrom = 'yearfrom';    //絞り込み用パラメータ（仮）
@@ -117,7 +120,9 @@ FullTextSearch.prototype = {
         // console.log(keyword);
         this.dataset = fullTextData;
         this.param   = keyword;
-        this.bmh   = keyword;
+        this.bmh   = keyword; //bmh 検索
+        this.pbsch   = keyword;  //pbsch 検索
+
         this.param_refine1   = keyword;
         this.param_refine2   = keyword;
         this.param_yearfrom   = keyword;
@@ -128,7 +133,8 @@ FullTextSearch.prototype = {
         this.param_class3   = keyword;
         
         this.keyword = this.getParam(this.param);
-        this.bmh = this.getParam2(this.bmh);
+        this.bmh = this.getParam2(this.bmh); //bmh 検索
+        this.pbsch = this.getParam3(this.pbsch);  //pbsch 検索
         
 
         this.refine1 = this.getParam_refine1(this.param_refine1);        //絞り込みキーワード取り出し
@@ -174,7 +180,7 @@ FullTextSearch.prototype = {
     },
 
 
-    // BMH検索関数
+    // BMH　検索関数
     getParam2 : function (s)
     {
         if (!s) return null;
@@ -196,6 +202,33 @@ FullTextSearch.prototype = {
 
         return this.splitKeyword(s);
     },
+
+
+
+    // PBSCH　検索関数
+    getParam3 : function (s)
+    {
+        if (!s) return null;
+        s = s.replace(/\+/g, " ");
+        var rg = new RegExp('[\?&]' + this.param_name3 + '\=([^&]*)');
+        if (s.match(rg)) s = RegExp.$1;
+
+        switch (this.charset) {
+        case 'UTF-8':
+            s = UnescapeUTF8(s);
+            break;
+        case 'SJIS':
+            s = UnescapeSJIS(s);
+            break;
+        case 'EUC':
+            s = UnescapeEUCJP(s);
+            break;
+        }
+
+        return this.splitKeyword(s);
+    },
+
+
 
 
     getParam_refine1 : function (s)    //絞り込みキーの取り出し
@@ -569,17 +602,19 @@ FullTextSearch.prototype = {
     ,
 
     // 一般キーワードが入る
-    do_find : function (keyword,bmh,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
+    do_find : function (keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
         // console.log(keyword);
 
         if (this.lastquery == keyword) return;
-        if (this.lastquery == bmh) return;
+        if (this.lastquery == bmh) return; //bmh 検索時
+        if (this.lastquery == pbsch) return; //pbsch 検索時
 
         this.lastquery = keyword;
-        this.lastquery = bmh;
+        this.lastquery = bmh; //bmh 検索時
+        this.lastquery = pbsch; //pbsch 検索時
 
-        var re = this.find(keyword,bmh,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3);
+        var re = this.find(keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3);
 
         this.set_st(re);
 
@@ -588,7 +623,7 @@ FullTextSearch.prototype = {
         this.view(re);
     }
     ,
-    find : function (keyword,bmh,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
+    find : function (keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
 
         if (!refine1) return [];
@@ -601,16 +636,23 @@ FullTextSearch.prototype = {
         if (!class3) return [];
 
         var query = null;
-        var query2 = null;
+        var query2 = null; //bmh 検索時
+        var query3 = null; //pbsch 検索時
 
         if (keyword != ""){
         //キーワード入力ありの場合
             query= this.splitKeyword(keyword);
         }
 
+        //bmh入力ありの場合
         if (bmh != ""){
-            //キーワード入力ありの場合
+            
             query2= this.splitKeyword(bmh);
+        }
+
+        //pbsch入力ありの場合
+        if (pbsch != ""){
+            query3= this.splitKeyword(pbsch);
         }
 
         var query_refine1 = this.splitKeyword(refine1);    //形態： 値がない場合が未対応。refine1=nullを、絶対入れる事。
@@ -632,14 +674,22 @@ FullTextSearch.prototype = {
         var reg_g2  = [];
         var reg_s2  = [];
 
+        // PBSCH Search 変数宣言
+        var reg3    = [];
+        var reg_g3  = [];
+        var reg_s3  = [];
+
         var result = [];
         var result2 = [];　// BMH Search 変数宣言
+        var result3 = [];　// BMH Search 変数宣言
 
         var aimai;
         var aimai2;　// BMH Search 変数宣言
+        var aimai3;　// BMH Search 変数宣言
 
         var aimai_array = [];
         var aimai_array2 = [];　// BMH Search 変数宣言
+        var aimai_array3 = [];　// BMH Search 変数宣言
 
         if (query_yearfrom == 'null' && query_yearto != 'null'){
             query_yearfrom = '00000000';
@@ -705,6 +755,43 @@ FullTextSearch.prototype = {
 
 
 
+
+
+
+
+            
+        // -------------- PBSCH入力ありの場合 --------------
+        if (query3) {
+            query3 = this.reg_optimize(query3);
+                for (var i = 0; i < query3.length; i++) {
+                    if (query3[i] == '') continue;
+                    if (this.zenhan) {
+                        aimai3 = this.ignore_ULHZ(query3[i]);
+                    } else {
+                        aimai3 = query3[i].replace(/[a-zA-Z]/g, this.ignore_case);
+                        aimai3 = this.ignore_number(aimai3);
+                    }
+                    aimai_array3.push(aimai3);
+                    try {
+                        var qr3   = new RegExp(aimai3);
+                        var qr_g3 = new RegExp(aimai3, 'g');
+                        reg3.push(qr3);
+                        reg_g3.push(qr_g3);
+                    } catch (e) {
+                        reg3.push(/(.)/);
+                    }
+                }
+                // console.log(reg_g);
+            } else {
+                reg3.push(/(.)/);
+            }
+
+
+
+
+
+
+
         //キーワード複数指定の場合
         if (aimai_array.length > 1) {
             for (var i = 0, aimai_length = aimai_array.length; i < aimai_length; i++) {
@@ -728,20 +815,41 @@ FullTextSearch.prototype = {
 
         // ------------ BMH複数指定の場合 ------------
         if (aimai_array2.length > 1) {
-            for (var i = 0, aimai_length = aimai_array2.length; i < aimai_length; i++) {
-                var tmp = [aimai_array2[i]];
-                for (var j = 0; j < aimai_length; j++) {
+            for (var i = 0, aimai_length2 = aimai_array2.length; i < aimai_length2; i++) {
+                var tmp2 = [aimai_array2[i]];
+                for (var j = 0; j < aimai_length2; j++) {
                     if (i == j) continue;
-                    tmp.push(aimai_array2[j]);
-                    reg_s2[reg_s.length] = {
-                        reg2   : new RegExp(tmp.join('')),    //joinで、
-                        reg_g2 : new RegExp(tmp.join(''), 'g'),
-                        len   : tmp.length,
+                    tmp2.push(aimai_array2[j]);
+                    reg_s2[reg_s2.length] = {
+                        reg2   : new RegExp(tmp2.join('')),    //joinで、
+                        reg_g2 : new RegExp(tmp2.join(''), 'g'),
+                        len   : tmp2.length,
                         point : 10
                     };
                 }
             }
             // console.log(reg_g2);
+        }
+
+
+
+        
+        // ------------ PBSCH複数指定の場合 ------------
+        if (aimai_array3.length > 1) {
+            for (var i = 0, aimai_length3 = aimai_array3.length; i < aimai_length3; i++) {
+                var tmp3 = [aimai_array3[i]];
+                for (var j = 0; j < aimai_length3; j++) {
+                    if (i == j) continue;
+                    tmp3.push(aimai_array3[j]);
+                    reg_s3[reg_s3.length] = {
+                        reg3   : new RegExp(tmp3.join('')),    //joinで、
+                        reg_g3 : new RegExp(tmp3.join(''), 'g'),
+                        len   : tmp3.length,
+                        point : 10
+                    };
+                }
+            }
+            // console.log(reg_g3);
         }
 
 
@@ -752,18 +860,23 @@ FullTextSearch.prototype = {
         var d_key = ['title','body','create_date','type'];
 
         var d_key2 = ['type']; //BMH　検索時！
+        var d_key3 = ['state']; //PBSCH　検索時！
 
         var d_pnt = [20,       1,       1];
         var d_pnt_pdf = 5;
 
-        var d_pnt2 = [];
+        var d_pnt2 = []; //BMH　検索時！
+        var d_pnt3 = []; ////PBSCH　検索時！
 
         //検索メイン（dataset.lengthが、DBのデータ数）
         for (var i = 0, d_len = this.dataset.length; i < d_len; i++) {
             var r, rg;
             var r2, rg2; //BMH 検索時
+            var r3, rg3; //PBSCH 検索時
+
             var d_length = 0;
             var d_length2 = 0;//BMH 検索時
+            var d_length3 = 0;//PBSCH 検索時
 
             var rg_len = 0;
             var rg_pos = null;
@@ -778,8 +891,16 @@ FullTextSearch.prototype = {
             var rg_cnt2 = 0;
             var rg_pnt2 = 0;
 
+            //PBSCH 検索時
+            var rg_len3 = 0;
+            var rg_pos3 = null;
+            var rg_per3 = 0;
+            var rg_cnt3 = 0;
+            var rg_pnt3 = 0;
+
             var res = [];
             var res2 = [];//BMH 検索時
+            var res3 = [];//PBSCH 検索時
 
 
             var idx_len_title = [];
@@ -849,6 +970,41 @@ FullTextSearch.prototype = {
                 }
             }
             // console.log(this.dataset);
+
+
+
+
+            //PBSCHの複数指定の場合
+            if (reg_s3.length > 0) {
+                for (var p = 0; p < d_key3.length; p++) {
+                    for (var k = 0; k < reg_s3.length; k++) {    //reg_sは、
+
+                        r3 = this.dataset[i][d_key3[p]].match(reg_s3[k].reg3);    //DB[n個目][項目]が、aimai_arrayの結合
+
+                        // console.log(r2);
+                        //（キーワード以外の）検索条件と一致しているか判定
+                        var is_target3 = this.judge_target(
+                                i,
+                                query_refine1,
+                                query_refine2,
+                                query_yearfrom,
+                                query_yearto,
+                                query_hasimage,
+                                query_class1,
+                                query_class2,
+                                query_class3
+                            );
+
+                        if (r3 && is_target3 && r3.index != -1) {
+                            rg3 = this.dataset[i][d_key3[p]].match(reg_s3[k].reg_g3);
+                            rg_pnt3 += (rg3.length + reg_s3[k].len) * reg_s3[k].point;
+                            res3.push([r3, d_key3[p]]);
+                        }
+                    }
+                }
+            }
+            // console.log(this.dataset);
+
 
 
 
@@ -965,6 +1121,68 @@ FullTextSearch.prototype = {
 
 
 
+
+
+
+
+            
+            // --------------- PBSCH 1語ごとの処理 ---------------
+            for (var j = 0; j < reg3.length; j++) {
+                var chk3 = false;
+
+                //DB、1件の各項目ごとの処理
+                for (var k = 0; k < d_key3.length; k++) {
+                    d_length3 += this.dataset[i][d_key3[k]].length;
+
+                    if (pbsch != ""){
+                    //キーワード入力ありの場合
+                        r3 = this.dataset[i][d_key3[k]].match(reg3[j]);
+                        // console.log(r3);
+                    } else {
+                    //キーワード入力なしの場合
+                    // !!----------- 여기를 'r2'로 바꾸면 에러 발생 ---------------!!
+                        r = this.dataset[i][d_key3[k]];
+                        // console.log(r);
+                    }
+
+                    //（キーワード以外の）検索条件と一致しているか判定
+                    var is_target3 = this.judge_target(
+                            i,
+                            query_refine1,
+                            query_refine2,
+                            query_yearfrom,
+                            query_yearto,
+                            query_hasimage,
+                            query_class1,
+                            query_class2,
+                            query_class3
+                        );
+
+                    if (r3 && is_target3 && r3.index != -1) {
+                        rg3 = this.dataset[i][d_key3[k]].match(reg_g3[j]);
+                        rg_len3 += rg3.length;
+                        rg_cnt3 += rg3.length * r3[0].length;
+                        if (rg_pos3 == null || rg_pos3 > r3.index) rg_pos3 = r3.index;
+                        rg_pnt3 += d_pnt3[k] * rg3.length;
+                        if (this.dataset[i].type == 'pdf') rg_pnt3 += d_pnt_pdf3;
+                        res3.push([r3, d_key3[k]]);
+                        chk3 = true;
+                    }
+                }
+                if (this.type && !chk3) {
+                    res3 = [];
+                    break;
+                }
+                // console.log(res3);
+            }
+            // console.log(pbsch);
+
+
+
+
+
+
+
             if (!res || res.length == 0) continue;
             rg_per = Math.round(rg_cnt / (d_length) * 100000) / 1000;
             // console.log(rg_per);
@@ -983,10 +1201,14 @@ FullTextSearch.prototype = {
 
 
 
-            
+
+
+
+        
+            // BMH 検索時
             if (!res2 || res2.length == 0) continue;
             rg_per2 = Math.round(rg_cnt2 / (d_length2) * 100000) / 1000;
-            console.log(rg_per2);
+            // console.log(rg_per2);
 
             // for (var n = 0; n < res2.length; j++) {
             //     if (res2[n][1] == 'type') {
@@ -997,9 +1219,41 @@ FullTextSearch.prototype = {
             //         idx_len_age2[idx_len_age2.length]   = [res2[n][0].index, res2[n][0][0].length];
             //     }
             // }
-            result[result.length] = [i, rg_len2, rg_pos2, rg_per2, rg_pnt2];
-            // console.log(result);
+            result2[result2.length] = [i, rg_len2, rg_pos2, rg_per2, rg_pnt2];
+            // console.log(result2);
+
+
+
+
+
+
+
+            // PBSCH 検索時
+            if (!res3 || res3.length == 0) continue;
+            rg_per3 = Math.round(rg_cnt3 / (d_length3) * 100000) / 1000;
+            // console.log(rg_per2);
+            result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
+            // console.log(result3);
+
         }
+
+
+
+
+        // 만약 result2 에 있는 항목이 result에 있다면 result에 남겨두고 
+        // result2 에 있는 항목이 result에 없다면 result에서 지우도록 수정해야 함 
+        console.log(result);
+        console.log(result2);
+        var array = [];
+        for (i = 0; i <= result2.length - 1; i++) {
+            // console.log(result2[i][1]);
+            if (result2[i][0] == result[i][0]){
+                console.log(result[i]);
+            } else {
+                console.log('delete', result[i]);
+            }
+        }
+        result = result2;
 
         // データ番号の昇順（database.jsの昇順）に並べ替え
         for (var i = 0, result_length = result.length; i < result_length; i++) {
@@ -1014,15 +1268,15 @@ FullTextSearch.prototype = {
         
         // --------------------- BMH 検索 ---------------------
         // データ番号の昇順（database.jsの昇順）に並べ替え
-        for (var i = 0, result_length2 = result2.length; i < result_length2; i++) {
-            for (var j = i + 1; j < result_length2; j++) {
-                if (result2[i][0] < result2[j][0]) {
-                    var temp   = result2[j];
-                    result[j] = result[i];
-                    result[i] = temp;
-                }
-            }
-        }
+        // for (var i = 0, result_length2 = result2.length; i < result_length2; i++) {
+        //     for (var j = i + 1; j < result_length2; j++) {
+        //         if (result2[i][0] < result2[j][0]) {
+        //             var temp   = result2[j];
+        //             result[j] = result[i];
+        //             result[i] = temp;
+        //         }
+        //     }
+        // }
 
         return result;
 
@@ -1303,7 +1557,7 @@ FullTextSearch.prototype = {
             buf += "</p>";
 
 
-            console.log(idx_len_body);
+            // console.log(idx_len_body);
             if (idx_len_body.length > 0) {
                 buf += this.snippet(d.body, idx_len_body);
             } else {

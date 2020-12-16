@@ -6,11 +6,15 @@ $(document).ready(function(){
     objFullTextSearch.initElement('stat', 'navi1', 'navi2', 'result');
 
         console.log("bmh", objFullTextSearch.bmh);
-        console.log("keyword", objFullTextSearch.keyword);
+        console.log("pbsch", objFullTextSearch.pbsch);
+        // console.log("keyword", objFullTextSearch.keyword);
 
 
     if (objFullTextSearch.keyword    //キーワード
-     && objFullTextSearch.bmh    //キーワード
+
+     && objFullTextSearch.bmh    //bmh
+     && objFullTextSearch.pbsch    //pbsch
+
      && objFullTextSearch.refine1    //形態
      && objFullTextSearch.refine2    //作成年代
      && objFullTextSearch.yearfrom   //画像の有無
@@ -22,7 +26,10 @@ $(document).ready(function(){
     ){
       objFullTextSearch.do_find(
         objFullTextSearch.keyword.join(" "),
+
         objFullTextSearch.bmh.join(" "),
+        objFullTextSearch.pbsch.join(" "),
+
         objFullTextSearch.refine1.join(" "),
         objFullTextSearch.refine2.join(" "),
         objFullTextSearch.yearfrom.join(" "),
