@@ -41,6 +41,11 @@
     allKeyword += mainKeyword;
     document.getElementById('sendKey2').value = allKeyword;
 
+
+
+
+
+
     return true;
     }
 
@@ -135,6 +140,58 @@
             }
             document.getElementById('keyword').value += inputedKeyword;
         }
+
+
+
+
+
+
+
+
+
+
+
+        
+
+    
+        // BMH
+        // mainKeyword2 = document.forms.sitesearch.inkeyword.value;
+        var allKeyword2 = "";
+        var len2 = document.sitesearch.chkBox_bmh.length;
+        if ((len2 === undefined) && (document.sitesearch.chkBox_bmh.checked == true)) {
+            chkdata2[i] = document.sitesearch.chkBox_bmh[i].value;
+            allKeyword2 = "　";
+        } else {
+            for (i = 0; i < len2; i++) {
+                if (document.sitesearch.chkBox_bmh[i].checked) {
+                    allKeyword2 += document.sitesearch.chkBox_bmh[i].value + "　";
+                }
+            }
+        }
+        // allKeyword += mainKeyword2;
+        // console.log(len);
+        document.getElementById('sendKey2').value = allKeyword2;
+
+
+
+
+
+        // PBSCH
+        var allKeyword3 = "";
+        var len3 = document.sitesearch.chkBox_pbsch.length;
+        if ((len3 === undefined) && (document.sitesearch.chkBox_pbsch.checked == true)) {
+            chkdata3[i] = document.sitesearch.chkBox_pbsch[i].value;
+            allKeyword3 = "　";
+        } else {
+            for (i = 0; i < len3; i++) {
+                if (document.sitesearch.chkBox_pbsch[i].checked) {
+                    allKeyword3 += document.sitesearch.chkBox_pbsch[i].value + "　";
+                }
+            }
+        }
+        document.getElementById('sendKey3').value = allKeyword3;
+
+        
 
         return true;
     }
@@ -318,8 +375,63 @@
 
 
 
-            
+
+
+
+
+
+
+
+
+
+            <div class="row tr"">
+                <div class="three columns th">
+                    <span>BMH (type)</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="D"><span> D</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="E"><span> E</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="F"><span> F</span></label></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
             <div class="row tr">
+                <div class="three columns th">
+                    <span>PBSCH (state)</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <!-- <li><label><input type="button" id="SelectAllBtn" value="Select All"/></label></li> -->
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="D"><span> D</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="E"><span> E</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="F"><span> F</span></label></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            
+            <!-- 以下は非表示 -->
+            <div class="row tr" style="display: none;">
                 <div class="three columns th">
                     <span>BMH (type)</span>
                 </div>
@@ -327,7 +439,7 @@
                     <ul class="checkList upper">
                         <!-- select all ボタンを　Onにしたいときにコメント解除 -->
                         <!-- <li><label><input type="button" id="SelectAllBtn" value="Select All"/></label></li> -->
-                        <li><label><input type="checkbox" name="refine1" value="null"><span> すべて</span></label></li>
+                        <li><label><input type="checkbox" name="refine1" value="null" checked><span> すべて</span></label></li>
                         <li><label><input type="checkbox" name="refine1" value="A" onchange="makeFilter(this);"><span> A</span></label></li>
                         <li><label><input type="checkbox" name="refine1" value="B" onchange="makeFilter(this);"><span> B</span></label></li>
                         <li><label><input type="checkbox" name="refine1" value="C" onchange="makeFilter(this);"><span> C</span></label></li>
@@ -341,13 +453,13 @@
             </div>
 
 
-            <div class="row tr">
+            <div class="row tr" style="display: none;">
                 <div class="three columns th">
                     <span>PBSCH (state)</span>
                 </div>
                 <div class="nine columns td">
                     <ul class="checkList upper">
-                        <li><label><input type="checkbox" name="refine2" value="null"><span> すべて</span></label></li>
+                        <li><label><input type="checkbox" name="refine2" value="null" checked><span> すべて</span></label></li>
                         <li><label><input type="checkbox" name="refine2" value="A"><span> A</span></label></li>
                         <li><label><input type="checkbox" name="refine2" value="B"><span> B</span></label></li>
                         <li><label><input type="checkbox" name="refine2" value="C"><span> C</span></label></li>
@@ -365,6 +477,8 @@
             <button title="検索" type="submit" class="formbtn large" name="submit2" onclick="onSearchClick();">検　索</button>
         </div>
         <!-- <input id="sendKey" type="hidden" name="keyword" value=""> -->
+        <input id="sendKey2" type="hidden" name="bmh" value="">
+        <input id="sendKey3" type="hidden" name="pbsch" value="">
     </form>
         <script type="text/javascript">
         //画面読み込み時

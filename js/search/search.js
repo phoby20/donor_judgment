@@ -1236,24 +1236,57 @@ FullTextSearch.prototype = {
             // console.log(result3);
 
         }
+        console.log(result2)
+        var resultList = [];
+        var resultList2 = [];
+
+
+
+
+
+// ----------------------- ここからは各条件の絞り込み作業 -------------------------
+// ----------------------- 以下を活性化するとキーワードけんさくができない -------------------------
+        // 全体のDATAからBMHで指定した条件を照らし合わせて重複するもののみを抽出
+        for ( var i = 0; i < result2.length; i++ ) {
+            for ( var k = 0; k < result.length; k++) {
+                if (result[k][0] == result2[i][0]) {
+                    resultList.push(result[k]);
+                }
+            }
+        }
+        // 抽出したDATAをResultに代入
+        result = resultList;
+
+
+        // // 上記のDATAからPBSCHで指定した条件を照らし合わせて重複するもののみを抽出
+        // for ( var i = 0; i < result3.length; i++ ) {
+        //     for ( var k = 0; k < result2.length; k++) {
+        //         if (result2[k][0] == result3[i][0]) {
+        //             resultList2.push(result2[k]);
+        //         }
+        //     }
+        // }
+        // // 抽出したDATAをResultに代入
+        // result = resultList2;
+
 
 
 
 
         // 만약 result2 에 있는 항목이 result에 있다면 result에 남겨두고 
         // result2 에 있는 항목이 result에 없다면 result에서 지우도록 수정해야 함 
-        console.log(result);
-        console.log(result2);
-        var array = [];
-        for (i = 0; i <= result2.length - 1; i++) {
-            // console.log(result2[i][1]);
-            if (result2[i][0] == result[i][0]){
-                console.log(result[i]);
-            } else {
-                console.log('delete', result[i]);
-            }
-        }
-        result = result2;
+        // console.log(result);
+        // console.log(result2);
+        // var array = [];
+        // for (i = 0; i <= result2.length - 1; i++) {
+        //     // console.log(result2[i][1]);
+        //     if (result2[i][0] == result[i][0]){
+        //         console.log(result[i]);
+        //     } else {
+        //         console.log('delete', result[i]);
+        //     }
+        // }
+        // result = result2;
 
         // データ番号の昇順（database.jsの昇順）に並べ替え
         for (var i = 0, result_length = result.length; i < result_length; i++) {
