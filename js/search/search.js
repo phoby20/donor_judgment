@@ -1237,8 +1237,9 @@ FullTextSearch.prototype = {
 
         }
         console.log(result2)
-        var resultList = [];
+        var notViewList = [];
         var resultList2 = [];
+        var count = 0;
 
 
 
@@ -1247,15 +1248,82 @@ FullTextSearch.prototype = {
 // ----------------------- ここからは各条件の絞り込み作業 -------------------------
 // ----------------------- 以下を活性化するとキーワードけんさくができない -------------------------
         // 全体のDATAからBMHで指定した条件を照らし合わせて重複するもののみを抽出
+        // for ( var i = 0; i < result2.length; i++ ) {
+        //     for ( var k = 0; k < result.length; k++) {
+        //         if (result[k][0] == result2[i][0]) {
+        //             resultList.push(result[k]);
+        //         }
+        //     }
+        // }
+        // // 抽出したDATAをResultに代入
+        // result = resultList;
+
+
+
+
+        viewList = [];
+        
         for ( var i = 0; i < result2.length; i++ ) {
-            for ( var k = 0; k < result.length; k++) {
+            
+            for (var k = 0;  k < result.length; k++) {
                 if (result[k][0] == result2[i][0]) {
-                    resultList.push(result[k]);
+                    console.log('보여줘야 할 번호 ', count);
+                    viewList.push(count);
+                    // delete result[count];
+                    count++;
+                } else if (result[k][0] != result2[i][0]) {
+                    if ( count != viewList ) {
+                        console.log('보여주면 안되는 번호 ', count);
+                        notViewList.push(count);
+                    }
+                    count++;
                 }
             }
+            count = 0;
         }
-        // 抽出したDATAをResultに代入
-        result = resultList;
+        
+        // 보여주지 말아야 할 리스트에서 중복되는 항목 제거
+        var duply_viewlist = Array.from(new Set(notViewList));
+
+
+        // duply_viewlist와 viewList를 ①중복되는 항목은 삭제하고 ②두개의 리스트를 합치기
+        for (var ks = 0;  ks < duply_viewlist.length; ks++) {
+            if (viewList.includes(duply_viewlist[ks][0])) {
+                delete duply_viewlist[ks];
+                // result.splice(k, 1);
+            }
+            // continue;
+        }
+        console.log('duply_viewlist:', duply_viewlist);
+
+
+
+
+
+        
+
+        // 보여주지 말아야 할 리스트에 있는지 확인해서 result에서 삭제하기
+        for (var k = 0;  k < result.length; k++) {
+            if (duply_viewlist.includes(result[k][0])) {
+                delete result[k];
+                // result.splice(k, 1);
+            }
+            // continue;
+        }
+
+        
+        // result 값이 없는 부분 제거
+        result  = result.filter(function(item) {
+            return item !== null && item !== undefined && item !== '';
+          });
+
+
+        console.log(result);
+
+
+
+
+
 
 
         // // 上記のDATAからPBSCHで指定した条件を照らし合わせて重複するもののみを抽出
