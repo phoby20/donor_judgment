@@ -39,8 +39,8 @@ function FullTextSearch()
     this.max        = 50;
 
     this.param_name = 'keyword';
-    this.param_name2 = 'bmh'; //bmh 検索
-    this.param_name3 = 'pbsch'; //pbsch 検索
+    this.param_name2 = 'alert_type'; //bmh 検索
+    this.param_name3 = 'section_state'; //pbsch 検索
 
     this.param_name_refine1 = 'refine1';    //絞り込み用パラメータ（仮）
     this.param_name_refine2 = 'refine2';    //絞り込み用パラメータ（仮）
@@ -120,8 +120,8 @@ FullTextSearch.prototype = {
         // console.log(keyword);
         this.dataset = fullTextData;
         this.param   = keyword;
-        this.bmh   = keyword; //bmh 検索
-        this.pbsch   = keyword;  //pbsch 検索
+        this.alert_type   = keyword; //bmh 検索
+        this.section_state   = keyword;  //pbsch 検索
 
         this.param_refine1   = keyword;
         this.param_refine2   = keyword;
@@ -133,8 +133,8 @@ FullTextSearch.prototype = {
         this.param_class3   = keyword;
         
         this.keyword = this.getParam(this.param);
-        this.bmh = this.getParam2(this.bmh); //bmh 検索
-        this.pbsch = this.getParam3(this.pbsch);  //pbsch 検索
+        this.alert_type = this.getParam2(this.alert_type); //bmh 検索
+        this.section_state = this.getParam3(this.section_state);  //pbsch 検索
         
 
         this.refine1 = this.getParam_refine1(this.param_refine1);        //絞り込みキーワード取り出し
@@ -602,19 +602,19 @@ FullTextSearch.prototype = {
     ,
 
     // 一般キーワードが入る
-    do_find : function (keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
+    do_find : function (keyword,alert_type,section_state,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
         // console.log(keyword);
 
         if (this.lastquery == keyword) return;
-        if (this.lastquery == bmh) return; //bmh 検索時
-        if (this.lastquery == pbsch) return; //pbsch 検索時
+        if (this.lastquery == alert_type) return; //alert_type 検索時
+        if (this.lastquery == section_state) return; //section_state 検索時
 
         this.lastquery = keyword;
-        this.lastquery = bmh; //bmh 検索時
-        this.lastquery = pbsch; //pbsch 検索時
+        this.lastquery = alert_type; //alert_type 検索時
+        this.lastquery = section_state; //section_state 検索時
 
-        var re = this.find(keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3);
+        var re = this.find(keyword,alert_type,section_state,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3);
 
         this.set_st(re);
 
@@ -623,7 +623,7 @@ FullTextSearch.prototype = {
         this.view(re);
     }
     ,
-    find : function (keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
+    find : function (keyword,alert_type,section_state,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
 
         if (!refine1) return [];
@@ -645,14 +645,14 @@ FullTextSearch.prototype = {
         }
 
         //bmh入力ありの場合
-        if (bmh != ""){
+        if (alert_type != ""){
             
-            query2= this.splitKeyword(bmh);
+            query2= this.splitKeyword(alert_type);
         }
 
         //pbsch入力ありの場合
-        if (pbsch != ""){
-            query3= this.splitKeyword(pbsch);
+        if (section_state != ""){
+            query3= this.splitKeyword(section_state);
         }
 
         var query_refine1 = this.splitKeyword(refine1);    //形態： 値がない場合が未対応。refine1=nullを、絶対入れる事。
@@ -858,7 +858,7 @@ FullTextSearch.prototype = {
 
 
 
-        var d_key = ['title','body','author','type'];
+        var d_key = ['title','body','state','type'];
 
         var d_key2 = ['type']; //BMH　検索時！
         var d_key3 = ['state']; //PBSCH　検索時！
@@ -1066,7 +1066,7 @@ FullTextSearch.prototype = {
 
 
 
-            // --------------- BMH 1語ごとの処理 ---------------
+            // --------------- alert_type 1語ごとの処理 ---------------
             for (var j = 0; j < reg2.length; j++) {
                 var chk2 = false;
 
@@ -1074,7 +1074,7 @@ FullTextSearch.prototype = {
                 for (var k = 0; k < d_key2.length; k++) {
                     d_length2 += this.dataset[i][d_key2[k]].length;
 
-                    if (bmh != ""){
+                    if (alert_type != ""){
                     //キーワード入力ありの場合
                         r2 = this.dataset[i][d_key2[k]].match(reg2[j]);
                         // console.log(r2);
@@ -1127,7 +1127,7 @@ FullTextSearch.prototype = {
 
 
             
-            // --------------- PBSCH 1語ごとの処理 ---------------
+            // --------------- section_state 1語ごとの処理 ---------------
             for (var j = 0; j < reg3.length; j++) {
                 var chk3 = false;
 
@@ -1135,7 +1135,7 @@ FullTextSearch.prototype = {
                 for (var k = 0; k < d_key3.length; k++) {
                     d_length3 += this.dataset[i][d_key3[k]].length;
 
-                    if (pbsch != ""){
+                    if (section_state != ""){
                     //キーワード入力ありの場合
                         r3 = this.dataset[i][d_key3[k]].match(reg3[j]);
                         // console.log(r3);
@@ -1328,12 +1328,12 @@ FullTextSearch.prototype = {
                 for (var i = 0; i <= result.length; i++) {
                     delete result[i];
                 }
-            } else if (keyword && !bmh && !pbsch) {
-                result = result;
-            }　else if (keyword && bmh && pbsch) {
-                for (var i = 0; i <= result.length; i++) {
-                    delete result[i];
-                }
+            // } else if (keyword && !alert_type && !section_state) {
+            //     result = result;
+            // }　else if (keyword && alert_type && section_state) {
+            //     for (var i = 0; i <= result.length; i++) {
+            //         delete result[i];
+            //     }
             }
         } else {
             // console.log('result : ', result);

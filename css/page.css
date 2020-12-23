@@ -159,7 +159,8 @@
 }
 
 #topsearch .checkList.upper li {
-    width: 16.6%;
+    /* width: 16.6%; */
+    width: 33%;
 }
 
 #topsearch .checkList:last-child {
