@@ -1,0 +1,236 @@
+body {
+    background-color: #FFFFFF;
+    margin: 0;
+    font-size: 14px;
+}
+/* Default link styling */
+a:link,
+a:visited {
+    color: #254e9b;
+    text-decoration:none;
+}
+a:hover, a:focus {
+    text-decoration:underline;
+}
+a:active { }
+
+.mb16 {
+    margin-bottom: 16px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+#footer{
+  margin-top: 10px;
+  padding: 20px;
+  text-align:center;
+  font-size:0.8em;
+  color: #888;
+}
+
+select {
+  padding: 4px;
+  color: #666666;
+  background-color: #f9f9f9;
+}
+
+/* checkbox & radiobox
+================================================== */
+input[type="checkbox"],
+input[type="radio"] {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.checkList::after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.checkList li label {
+  position: relative;
+  display: block;
+  word-break: break-all;
+    cursor: pointer;
+}
+.checkList li label input[type="checkbox"] + span,
+.checkList li label input[type="radio"] + span {
+  position: relative;
+  padding: 0 0 0 25px;
+}
+.checkList label input[type="checkbox"] + span::before {
+  border-color: #256c9b;
+}
+.checkList label input[type="checkbox"]:checked + span::before {
+  background-color: #25669b;
+}
+.checkList label span {
+  display: inline-block;
+}
+.checkList label input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.checkList label input[type="checkbox"] + span::before, .checkList label input[type="checkbox"] + span::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  display: inline-block;
+  content: '';
+  box-sizing: border-box;
+}
+label input[type="checkbox"] + span::before {
+  z-index: 0;
+  background-color: transparent;
+  width: 16px;
+  height: 16px;
+  border: 1px #616161 solid;
+  border-radius: 2px;
+}
+label input[type="checkbox"] + span::after {
+  z-index: 1;
+  margin: 2px 5px;
+  width: 6px;
+  height: 9px;
+}
+
+label input[type="checkbox"]:checked + span::before {
+  background-color: #616161;
+}
+label input[type="checkbox"]:checked + span::after {
+  top: -3px;
+  left: 5px;
+  border: 2px solid #fff;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+    z-index: 10;
+}
+.checkList label input[type="radio"] + span::before {
+  border-color: #259b82;
+}
+.checkList label span {
+  display: inline-block;
+}
+.checkList label input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.checkList label input[type="radio"] + span::before {
+  position: absolute;
+  display: inline-block;
+  content: '';
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+.checkList label input[type="radio"] + span::before {
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  background-color: transparent;
+  width: 16px;
+  height: 16px;
+  border: 1px #259b82 solid;
+}
+.checkList label input[type="radio"]:checked + span::before {
+  border-width: 5px;
+}
+
+.btnArea {
+    padding: 25px 0;
+    text-align: center;
+}
+
+.clear {
+    clear: both;
+}
+
+.clear hr{
+    display:none;
+}
+
+a.page-top {
+    clear: right;
+    float: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    background-image: url(../img/arrow_top.png);
+    background-color: rgba(0, 0, 0, 0.2);
+    display: none; /* JSで表示 */
+    height: 40px;
+    width: 40px;
+}
+a.page-top:hover,
+a.page-top:active {
+    transition: background-color 0.3s 0s ease;
+    background-color: rgba(34, 140, 117, 1);
+}
+a.page-top:visited {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (min-width: 980px) {
+
+  #wrap{
+      position: relative;
+  }
+
+  #head{
+      padding:10px;
+      text-align:center;
+  }
+
+  #footer{
+      clear:both;
+      text-align:center;
+  }
+
+}
+
+
+@media screen and (max-width: 979px) {
+
+  #wrap{
+      width:100%;
+      margin: 0 auto;
+  }
+
+  #head{
+      width:100%;
+      text-align:center;
+  }
+
+  #serch{
+      float:left;
+      width:220px;
+      margin-top:10px;
+      margin-left:10px;
+  }
+
+  #footer{
+      clear:both;
+      width:100%;
+  }
+
+}
+
