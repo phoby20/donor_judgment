@@ -1270,8 +1270,8 @@ FullTextSearch.prototype = {
                     delete notduply_viewlist[ks];
                 }
             }
-            console.log('viewList :', viewList);
-            console.log('notduply_viewlist:', notduply_viewlist);
+            // console.log('viewList :', viewList);
+            // console.log('notduply_viewlist:', notduply_viewlist);
             
             if (notduply_viewlist.length != 0) {
                 // 보여주지 말아야 할 리스트에 있는지 확인해서 result에서 삭제하기
@@ -1310,7 +1310,7 @@ FullTextSearch.prototype = {
         result_original  = result_original.filter(function(item) {
             return item !== null && item !== undefined && item !== '';
         });
-        console.log(result);
+        // console.log(result);
 
         
 
@@ -1347,8 +1347,8 @@ FullTextSearch.prototype = {
             return item !== null && item !== undefined && item !== '';
         });
 
-        console.log('result : ', result)
-        console.log('result3 : ', result3)
+        // console.log('result : ', result)
+        // console.log('result3 : ', result3)
 
 
 

@@ -3,6 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache">
 <title>日本骨髄バンク　ドナー適格性判定</title>
 <link href="css/normalize.css" rel="stylesheet" type="text/css">
 <link href="css/skeleton-custom.css" rel="stylesheet" type="text/css">
@@ -17,28 +18,20 @@
 var ageArr = new Array(); //필터 내용을 저장하는 배열 
 var showFilterValue = document.getElementById("showFilter");
 
-//필터입력값 보여주기 위한 text
- //필터 내용을 저장하는 function 
- function makeFilter(target){
-     var ageVal = target.value; //check value
-     var confirmCheck = target.checked; //check여부 확인
+// 
+function rel() {
+    if (window.name != "any") {
+      location.reload();
+      window.name = "any";
+    } else {
+      window.name = "";
+    }
+  }
 
-     console.log("필터 선택값 : "+ageVal); 
-     console.log("선택여부 : "+confirmCheck);
 
-    // check true 
-    if(confirmCheck == true){
-        console.log("check");
-        ageArr.push(ageVal); // check value filter 배열에 입력
 
-    }else{ 
-        ageArr.splice(ageArr.indexOf(ageVal), 1); 
-        // check value filter 배열내용 삭제
 
-    } showFilterValue.value = ageArr; 
-    // textBox에 필터 배열 추가 
-    console.log("필터입력값 출력 : "+ageArr); 
-}
+
 
 
 
@@ -159,7 +152,7 @@ var showFilterValue = document.getElementById("showFilter");
 </script>
 </head>
 
-<body>
+<body onLoad="rel()">
 <div id="head-bar">
     <div class="inner">
         <div class="head-title-block">
@@ -251,19 +244,42 @@ var showFilterValue = document.getElementById("showFilter");
 
 
             <div class="row tr">
-                <div class="three columns th" style="height:76px;">
+                <div class="three columns th" style="height:256px;">
                     <span>区分</span>
                 </div>
-                <div class="nine columns td keyword-list">
+                <div class="nine columns td">
                     <!-- <p class="keyword-category">区分</p> -->
-                    <ul class="checkList">
-                        <li><label><input type="checkbox" name="chkBox" value="臨床的な問題"><span> 臨床的な問題</span></label></li>
-                        <li><label><input type="checkbox" name="chkBox" value="呼吸器疾患"><span> 呼吸器疾患</span></label></li>
-                        <li><label><input type="checkbox" name="chkBox" value="循環器疾患"><span> 循環器疾患</span></label></li>
-                        <li><label><input type="checkbox" name="chkBox" value="消化器疾患"><span> 消化器疾患</span></label></li>
-                        <li><label><input type="checkbox" name="chkBox" value="肝・胆・膵疾患"><span> 肝・胆・膵疾患</span></label></li>
-                        <li><label><input type="checkbox" name="chkBox" value="代謝・栄養疾患"><span> 代謝・栄養疾患</span></label></li>
-                        <li><label><input type="checkbox" name="chkBox" value="内分泌疾患"><span> 内分泌疾患</span></label></li>
+                    <ul class="checkList" id="first-menu">
+                        <div class="chk_group">
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="臨床的な問題" onclick="category1(this);"><span> 臨床的な問題</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="呼吸器疾患" onclick="category1(this);"><span> 呼吸器疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="循環器疾患" onclick="category1(this);"><span> 循環器疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="消化器疾患" onclick="category1(this);"><span> 消化器疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="肝・胆・膵疾患" onclick="category1(this);"><span> 肝・胆・膵疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="代謝・栄養疾患" onclick="category1(this);"><span> 代謝・栄養疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="内分泌疾患" onclick="category1(this);"><span> 内分泌疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="血液・造血器疾患" onclick="category1(this);"><span> 血液・造血器疾患</span></label></li>
+                        </div>
+                        <div class="chk_group">
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="腎・尿路疾患、水電解質異常" onclick="category1(this);"><span> 腎・尿路疾患、水電解質異常</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="遺伝性疾患" onclick="category1(this);"><span> 遺伝性疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="神経・筋疾患" onclick="category1(this);"><span> 神経・筋疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="感染症、性病、寄生虫疾患" onclick="category1(this);"><span> 感染症、性病、寄生虫疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="リウマチ性疾患、アレルギー性疾患" onclick="category1(this);"><span> リウマチ性疾患、アレルギー性疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="中毒、環境要因による疾患" onclick="category1(this);"><span> 中毒、環境要因による疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="整形外科疾患" onclick="category1(this);"><span> 整形外科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="婦人科疾患" onclick="category1(this);"><span> 婦人科疾患</span></label></li>
+                        </div>
+                        <div class="chk_group">
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="精神科疾患" onclick="category1(this);"><span> 精神科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="耳鼻科疾患" onclick="category1(this);"><span> 耳鼻科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="皮膚科疾患" onclick="category1(this);"><span> 皮膚科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="眼科" onclick="category1(this);"><span> 眼科</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="歯科疾患" onclick="category1(this);"><span> 歯科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="臓器移植・提供" onclick="category1(this);"><span> 臓器移植・提供</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="美容法・健康法・アンチエイジング療法" onclick="category1(this);"><span> 美容法・健康法・アンチエイジング療法</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="その他" onclick="category1(this);"><span> その他</span></label></li>
+                        </div>
                     </ul>
                     <!-- <p class="keyword-category">項目</p>
                     <ul class="checkList">
@@ -327,7 +343,7 @@ var showFilterValue = document.getElementById("showFilter");
 
 
 
-            <div class="row tr"">
+            <div class="row tr">
                 <div class="three columns th">
                     <span>BMH</span>
                 </div>
@@ -423,7 +439,6 @@ var showFilterValue = document.getElementById("showFilter");
     <div id="memo">
         <h4>検索方法について</h4>
         <ul>
-            <li>BMHおよびPBSCHは<strong style="color: red;">必須項目</strong>です。</li>
             <li>複数のキーワードを含む検索（AND検索）が可能です。単語と単語の間にスペースを開けて検索して下さい。</li>
         </ul>
     </div>

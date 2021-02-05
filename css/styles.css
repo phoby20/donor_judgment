@@ -56,6 +56,15 @@ input[type="radio"] {
   content: '';
   clear: both;
 }
+#first-menu {
+  display: flex;
+  flex-direction: row;
+}
+.checkList .chk_group{
+  display: flex;
+  flex-direction: column;
+  padding-right: 25px;
+}
 .checkList li label {
   position: relative;
   display: block;
