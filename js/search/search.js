@@ -1787,7 +1787,7 @@ FullTextSearch.prototype = {
             var start = idx_len[0][0] - this.result_prefix;
             return [
                 body.substring(start, idx),
-                "<strong>",
+                "<strong style='background: linear-gradient(to top, yellow 50%, transparent 50%);'>",
                 body.substr(idx, len),
                 "</strong>",
                 body.substr(idx + len, this.result_suffix)
