@@ -57,7 +57,27 @@ const classes_old_20200220 =
     "甲状腺疾患" : [],
 };
 
+function GetQueryString()
+    // 参考 http://so-zou.jp/web-app/tech/programming/javascript/sample/get.htm
+    {
+        var res = {};
+        if (1 < window.location.search.length) {
+            // 最初の1文字 (?記号) を除いた文字列を取得する
+            var query = window.location.search.substring(1);
+            // クエリの区切り記号 (&) で文字列を配列に分割する
+            var parameters = query.split('&');
 
+            for (var i = 0; i < parameters.length; i++) {
+                // パラメータ名とパラメータ値に分割する
+                var element = parameters[i].split('=');
+                var paramName = decodeURIComponent(element[0]);
+                var paramValue = decodeURIComponent(element[1]);
+                // パラメータ名をキーとして連想配列に追加する
+                res[paramName] = paramValue;
+            }
+        }
+        return res;
+    }
 
 
 // 分類セレクトボックスの初期値
@@ -66,7 +86,7 @@ const initial_class_text = '<option value="null">すべて</option>';
 
 
 
-
+// 区分をクリックしたときに動作
 var di = '';
 function category1(e) {
     
@@ -105,9 +125,11 @@ function category1(e) {
 
 // ページ読み込み時処理
 $(document).ready(function(){
+    var result = GetQueryString();
+    var chkBox = result['chkBox'];
 
-    // 大分類の初期化
-    init_class1();
+    // 大分類の初期化 - 키워드를 인수로 넘겨줘야 함!!! ---------------------------------------------------------------------
+    init_class1(chkBox);
     // 中分類の初期化
     $('select#class2').html(initial_class_text);
     // 小分類の初期化
@@ -125,13 +147,25 @@ $(document).ready(function(){
     });
 
     // 大分類の初期化
-    function init_class1(){
+    function init_class1(chkBox){
 
         // 大分類のセレクトボックスにセットするコード
         var class1_text = initial_class_text;
 
-        // 大分類の配列
-        var class1_data = Object.keys(classes_old_20200220);
+
+
+
+        // 검색 후 검색했던 정보를 셋팅하는 부분
+        // chkBox를 넘겨받고 classes[chkBox]의 키를 추출해서 class1(풀 다운 메뉴)에 셋팅한다
+        // 大分類の配列 ---------------------------------------------------------------------------------------------------
+        if (chkBox) {
+            var class1_data = Object.keys(classes[chkBox]);
+        } else {
+            var class1_data = Object.keys(classes);
+        }
+
+
+
         for (var i = 0; i < class1_data.length; i++) {
             class1_text += '<option value="'+ class1_data[i] +'">'+ class1_data[i] +'</option>';
         }
@@ -141,9 +175,9 @@ $(document).ready(function(){
 
     }
 
-    // 大分類の選択時処理
+    // 区分を選択したときに処理
     function on_change_class1(class1){
-        // console.log($(class1).val())
+        // console.log(class1)
 
         var class2 = $('select#class2');
         var class3 = $('select#class3');

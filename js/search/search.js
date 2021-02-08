@@ -1694,17 +1694,19 @@ FullTextSearch.prototype = {
             } else if (d.type == 'A') {
                 buf   += "<img class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
             } else if (d.type == 'B') {
-                buf   += "<img class='thumbnail-img' src='images/common/hantei_b.png' alt='A'>";
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_b.png' alt='B'>";
             } else if (d.type == 'C') {
-                buf   += "<img class='thumbnail-img' src='images/common/hantei_c.png' alt='A'>";
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_c.png' alt='C'>";
             } else if (d.type == 'D') {
-                buf   += "<img class='thumbnail-img' src='images/common/hantei_d.png' alt='A'>";
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
             } else if (d.type == 'E') {
-                buf   += "<img class='thumbnail-img' src='images/common/hantei_e.png' alt='A'>";
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_e.png' alt='E'>";
             } else if (d.type == 'F') {
-                buf   += "<img class='thumbnail-img' src='images/common/hantei_f.png' alt='A'>";
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_f.png' alt='F'>";
+            } else if (d.type == '【ＤＬＩ】B') {
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
             } else if (d.type == '-') {
-                buf   += "<img class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_etc.png' alt='-'>";
             }
             buf   += "</div>";
 
@@ -1729,6 +1731,8 @@ FullTextSearch.prototype = {
                 buf   += "<img class='thumbnail-img' src='images/common/hantei_e.png' alt='A'>";
             } else if (d.state == 'F') {
                 buf   += "<img class='thumbnail-img' src='images/common/hantei_f.png' alt='A'>";
+            } else if (d.type == '【ＤＬＩ】B') {
+                buf   += "<img class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
             } else if (d.state == '-') {
                 buf   += "<img class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
             }
