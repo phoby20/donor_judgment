@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.clearFix:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+
+#resultTable {
+    border: 1px #b8d6d6 solid;
+    width: 680px;
+    border-spacing: 2px;
+    font-size:1em;
+    margin: 0 auto;
+}
+
+#resultTable th, td{
+    border: none;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+#resultTable td{
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+#resultTable tr:nth-child(odd) td{
+    background-color:#eef2f3;
+}
+
+#resultTable th{
+    background-color:#006e99;
+    padding-left:25px;
+    width: 150px;
+    color: #fff;
+}
+
+#resultTable tr:nth-child(odd) th{
+    background-color:#005780;
+}
+
+#resultTable {
+    float: left;
+}
+
+.resultWrapper {
+    width: 950px;
+    margin: 30px auto;
+}
+
+.imageBlock {
+    float: left;
+    width: 250px;
+    margin-left: 20px;
+    text-align: center;
+}
+
+.imageBlock img{
+    padding: 2px;
+    max-width: 244px;
+    border: 1px solid #ccc;
+
+}
+
+
