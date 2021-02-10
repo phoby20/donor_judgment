@@ -99,7 +99,7 @@
         var nowchkBox_pbsch = result['pbsch'];
         document.getElementById('inputed-keyword').value = nowkeyword;
 
-        console.log(nowinkeywords);
+        // console.log(nowinkeywords);
 
         var chkBox = splitKeyword(chkBox);
         var nowchkBox_bmh = splitKeyword(nowchkBox_bmh);
@@ -194,8 +194,10 @@
 
 
 
+        
         // 前画面で入力されたキーワード
         inputedKeyword = document.getElementById('inputed-keyword').value;
+        document.getElementById('inputed-keyword').value = '';
 
         if (inputedKeyword.length <= 0) {
             document.getElementById('newkeyword').value = chkboxKeyword;
@@ -203,6 +205,8 @@
         // 新たに入力されたキーワード
         keyword = document.getElementById('newkeyword').value;
         // alert(keyword);
+
+        
 
 
         if (inputedKeyword.length > 0) {
@@ -212,7 +216,19 @@
             } else if (chkboxKeyword) {
                 document.getElementById('newkeyword').value += chkboxKeyword;
             }
+
+            var test = document.getElementById('newkeyword').value;
+            var el = String(test.split('　'));
+            var qk = el.split(',');
+            var ks = inputedKeyword.split('　');
+            if (ks.includes(qk[0])) {
+                document.getElementById('newkeyword').value = '';
+            }
+            
+          
+
             document.getElementById('newkeyword').value += inputedKeyword;
+            
         }
 
 

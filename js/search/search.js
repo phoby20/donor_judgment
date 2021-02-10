@@ -1202,17 +1202,43 @@ FullTextSearch.prototype = {
             // console.log(result);
 
         
-            // BMH 検索時
-            if (!res2 || res2.length == 0 || !res3 || res3.length == 0) {
-                continue;
-            } else if (res2 || res2.length <= 1 && res3 || res3.length <= 1) {
-                rg_per2 = Math.round(rg_cnt2 / (d_length2) * 100000) / 1000;
-                result2[result2.length] = [i, rg_len2, rg_pos2, rg_per2, rg_pnt2];
-                rg_per3 = Math.round(rg_cnt3 / (d_length3) * 100000) / 1000;
-                // console.log(res3);
-                result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
-            }
+            // BMH 検索時 ------------------------------------- 성공작 (2021.2.10)------------------------------------------------
+            // if (!res2 || res2.length == 0 && !res3 || res3.length == 0) {
+            //     continue;
+            // } else if (res2 || res2.length <= 1 && res3 || res3.length <= 1) {
+            //     rg_per2 = Math.round(rg_cnt2 / (d_length2) * 100000) / 1000;
+            //     result2[result2.length] = [i, rg_len2, rg_pos2, rg_per2, rg_pnt2];
+            //     rg_per3 = Math.round(rg_cnt3 / (d_length3) * 100000) / 1000;
+            //     result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
+            // }
+            //  ------------------------------------------ 성공작  끝 -----------------------------------------------------
             
+
+            // --------------------------------------------- BMH PBSCH 크로스 체크 ---------------------------------------------
+            if (!res2 || res2.length == 0) {
+                // BMH PBSCH 둘다 없는 경우
+                if (!res3 || res3.length == 0) {
+                    continue
+                }
+                // 결과 2(BMH)는 없고 결과 3(PBSCH)은 있는 경우
+                else if (res3 || res3.length <= 1) {
+                    rg_per3 = Math.round(rg_cnt3 / (d_length3) * 100000) / 1000;
+                    result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
+                }
+            } else if (res2 || res2.length <= 1) {
+                // 결과 2(BMH)만 있고 결과 3(PBSCH)은 없는 경우
+                if (!res3 || res3.length == 0) {
+                    rg_per2 = Math.round(rg_cnt2 / (d_length2) * 100000) / 1000;
+                    result2[result2.length] = [i, rg_len2, rg_pos2, rg_per2, rg_pnt2];
+                }
+                // 둘다 있는 경우
+                else if (res3 || res3.length <= 1) {
+                    rg_per2 = Math.round(rg_cnt2 / (d_length2) * 100000) / 1000;
+                    result2[result2.length] = [i, rg_len2, rg_pos2, rg_per2, rg_pnt2];
+                    rg_per3 = Math.round(rg_cnt3 / (d_length3) * 100000) / 1000;
+                    result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
+                }
+            }
 
             // // BMH 検索時
             // if (!res2 || res2.length == 0) continue;
@@ -1225,8 +1251,8 @@ FullTextSearch.prototype = {
             // result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
 
         }
-        // console.log(result2);
-        // console.log(result3);
+        console.log(result2);
+        console.log(result3);
 
 
 
@@ -1234,10 +1260,6 @@ FullTextSearch.prototype = {
 
         // --------------------------------------------------------------------------------------------------------------------------------------------
         
-
-
-
-
         function listFilter (array1, array2) {
             var count = 0;
             var viewList = [];
@@ -1295,6 +1317,7 @@ FullTextSearch.prototype = {
             }
             
         }
+
         if (result.length == 1 ) {
             result = result;
         } else {
@@ -1303,7 +1326,7 @@ FullTextSearch.prototype = {
    
 
         // console.log(result_original);
-        // console.log(result);
+
         result  = result.filter(function(item) {
             return item !== null && item !== undefined && item !== '';
         });
@@ -1333,6 +1356,15 @@ FullTextSearch.prototype = {
             }　else if (keyword && bmh && pbsch) {
                 for (var i = 0; i <= result.length; i++) {
                     delete result[i];
+                }
+
+                // 새로 추가한 부분 (2021.2.10)
+                //  키워드 검색이 있고 result2 or result3가 있을 경우 result에 result2 or result3를 대입한다
+            } else {
+                if (result2) {
+                    result = result2
+                }else if (result3) {
+                    result = result3
                 }
             }
         } else {
