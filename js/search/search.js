@@ -1312,6 +1312,7 @@ FullTextSearch.prototype = {
             // result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
 
         }
+        // console.log(result);
         // console.log(result2);
         // console.log(result3);
 
@@ -1402,12 +1403,26 @@ FullTextSearch.prototype = {
             
         } else if (result.length == 1 && result3.length == 0) {
             // 키워드 검색이 있고 결과값이 있으나 AB판정에서의 결과가 0이면 최종 결과는 0으로 설정 (2021.02.12)
-            result = result3
-            if (!keyword) {
-                delete result[0];
-            }
-        } else if (result.length > 1 && result3.length == 0) {
             
+            if (check_bmh.length < 5) {
+                if (result3.length >= 1) {
+                    // console.log('!!!!!!!!!!!!!!');
+                    result = result3
+                }
+                
+                // console.log('!!!!!!!!!!!!!!');
+                if (!keyword) {
+                    delete result[0];
+                }
+            } else if (check_pbsch.length < 5) {
+                result = result3
+                if (!keyword) {
+                    delete result[0];
+                }
+            }
+            
+            
+        } else if (result.length > 1 && result3.length == 0) {
             if (!keyword) {
                 for (var i = 0; i <= result.length; i++) {
                     delete result[i];
@@ -1444,12 +1459,10 @@ FullTextSearch.prototype = {
             // 테스트 내용：神経・筋疾患　> BMH = C, PBSCH = D로 검색하면 D판정된 아이템이 4건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
             if (check_bmh.length < 5) {
                 if (result2.length == 0) {
-                    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!');
                     for (var i = 0; i < result.length; i++) {
                         delete result[i];
                     }
                 }
-                
             }
 
             
