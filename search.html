@@ -101,24 +101,35 @@
 
         // console.log(nowinkeywords);
 
-        var chkBox = splitKeyword(chkBox);
-        var nowchkBox_bmh = splitKeyword(nowchkBox_bmh);
-        var nowchkBox_pbsch = splitKeyword(nowchkBox_pbsch);
+        if (chkBox) {
+            var chkBox = splitKeyword(chkBox);
+            for (i = 0; i < document.sitesearch.chkBox.length; i++) {
+                if (chkBox.includes(document.getElementsByName('chkBox')[i].value)) document.getElementsByName('chkBox')[i].checked = true;
+            };
+        }
+        if (nowchkBox_bmh) {
+            var nowchkBox_bmh = splitKeyword(nowchkBox_bmh);
+            for (i = 0; i < document.sitesearch.chkBox_bmh.length; i++) {
+                if (nowchkBox_bmh.includes(document.getElementsByName('chkBox_bmh')[i].value)) document.getElementsByName('chkBox_bmh')[i].checked = true;
+            };
+        }
+        if (nowchkBox_pbsch) {
+            var nowchkBox_pbsch = splitKeyword(nowchkBox_pbsch);
+            for (i = 0; i < document.sitesearch.chkBox_pbsch.length; i++) {
+                if (nowchkBox_pbsch.includes(document.getElementsByName('chkBox_pbsch')[i].value)) document.getElementsByName('chkBox_pbsch')[i].checked = true;
+            };
+        }
+        
+        
 
         
         
 
 
         
-        for (i = 0; i < document.sitesearch.chkBox.length; i++) {
-            if (chkBox.includes(document.getElementsByName('chkBox')[i].value)) document.getElementsByName('chkBox')[i].checked = true;
-        };
-        for (i = 0; i < document.sitesearch.chkBox_bmh.length; i++) {
-            if (nowchkBox_bmh.includes(document.getElementsByName('chkBox_bmh')[i].value)) document.getElementsByName('chkBox_bmh')[i].checked = true;
-        };
-        for (i = 0; i < document.sitesearch.chkBox_pbsch.length; i++) {
-            if (nowchkBox_pbsch.includes(document.getElementsByName('chkBox_pbsch')[i].value)) document.getElementsByName('chkBox_pbsch')[i].checked = true;
-        };
+        
+        
+        
 
 
         

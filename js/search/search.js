@@ -42,6 +42,11 @@ function FullTextSearch()
     this.param_name2 = 'bmh'; //bmh 検索
     this.param_name3 = 'pbsch'; //pbsch 検索
 
+
+    this.param_name4 = 'chkBox_bmh'; //chkBox_bmh 検索
+    this.param_name5 = 'chkBox_pbsch'; //chkBox_pbsch 検索
+
+
     this.param_name_refine1 = 'refine1';    //絞り込み用パラメータ（仮）
     this.param_name_refine2 = 'refine2';    //絞り込み用パラメータ（仮）
     this.param_name_yearfrom = 'yearfrom';    //絞り込み用パラメータ（仮）
@@ -123,6 +128,9 @@ FullTextSearch.prototype = {
         this.bmh   = keyword; //bmh 検索
         this.pbsch   = keyword;  //pbsch 検索
 
+        this.check_bmh = keyword
+        this.check_pbsch = keyword
+
         this.param_refine1   = keyword;
         this.param_refine2   = keyword;
         this.param_yearfrom   = keyword;
@@ -135,6 +143,9 @@ FullTextSearch.prototype = {
         this.keyword = this.getParam(this.param);
         this.bmh = this.getParam2(this.bmh); //bmh 検索
         this.pbsch = this.getParam3(this.pbsch);  //pbsch 検索
+
+        this.check_bmh = this.getParam4(this.check_bmh);  //check_bmh 検索
+        this.check_pbsch = this.getParam5(this.check_pbsch);  //check_pbsch 検索
         
 
         this.refine1 = this.getParam_refine1(this.param_refine1);        //絞り込みキーワード取り出し
@@ -227,6 +238,53 @@ FullTextSearch.prototype = {
 
         return this.splitKeyword(s);
     },
+
+    // Check_BMH　検索関数
+    getParam4 : function (s)
+    {
+        if (!s) return null;
+        s = s.replace(/\+/g, " ");
+        var rg = new RegExp('[\?&]' + this.param_name4 + '\=([^&]*)');
+        if (s.match(rg)) s = RegExp.$1;
+
+        switch (this.charset) {
+        case 'UTF-8':
+            s = UnescapeUTF8(s);
+            break;
+        case 'SJIS':
+            s = UnescapeSJIS(s);
+            break;
+        case 'EUC':
+            s = UnescapeEUCJP(s);
+            break;
+        }
+
+        return this.splitKeyword(s);
+    },
+
+
+        // Check_BMH　検索関数
+        getParam5 : function (s)
+        {
+            if (!s) return null;
+            s = s.replace(/\+/g, " ");
+            var rg = new RegExp('[\?&]' + this.param_name5 + '\=([^&]*)');
+            if (s.match(rg)) s = RegExp.$1;
+    
+            switch (this.charset) {
+            case 'UTF-8':
+                s = UnescapeUTF8(s);
+                break;
+            case 'SJIS':
+                s = UnescapeSJIS(s);
+                break;
+            case 'EUC':
+                s = UnescapeEUCJP(s);
+                break;
+            }
+    
+            return this.splitKeyword(s);
+        },
 
 
 
@@ -602,9 +660,10 @@ FullTextSearch.prototype = {
     ,
 
     // 一般キーワードが入る
-    do_find : function (keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
+    do_find : function (keyword,bmh,pbsch,check_bmh,check_pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
-        // console.log(keyword);
+        // console.log(check_bmh);
+        // console.log(check_pbsch);
 
         if (this.lastquery == keyword) return;
         if (this.lastquery == bmh) return; //bmh 検索時
@@ -614,7 +673,7 @@ FullTextSearch.prototype = {
         this.lastquery = bmh; //bmh 検索時
         this.lastquery = pbsch; //pbsch 検索時
 
-        var re = this.find(keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3);
+        var re = this.find(keyword,bmh,pbsch,check_bmh,check_pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3);
 
         this.set_st(re);
 
@@ -623,8 +682,10 @@ FullTextSearch.prototype = {
         this.view(re);
     }
     ,
-    find : function (keyword,bmh,pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
+    find : function (keyword,bmh,pbsch,check_bmh,check_pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
+        // console.log(check_bmh);
+        // console.log(check_pbsch);
 
         if (!refine1) return [];
         if (!refine2) return [];
@@ -915,7 +976,7 @@ FullTextSearch.prototype = {
 
                         r = this.dataset[i][d_key[j]].match(reg_s[k].reg);    //DB[n個目][項目]が、aimai_arrayの結合
 
-                        // console.log(r);
+                        // console.log(query_class2);
                         //（キーワード以外の）検索条件と一致しているか判定
                         var is_target = this.judge_target(
                                 i,
@@ -1251,12 +1312,8 @@ FullTextSearch.prototype = {
             // result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
 
         }
-        console.log(result2);
-        console.log(result3);
-
-
-
-
+        // console.log(result2);
+        // console.log(result3);
 
         // --------------------------------------------------------------------------------------------------------------------------------------------
         
@@ -1340,13 +1397,17 @@ FullTextSearch.prototype = {
         if ( result.length == 0 ) {
             listFilter(result_original, result3);
         } else if (result.length == 1 && result3.length != 0) {
-            // console.log('result : ', result);
-            result = result;
+            // 테스트 내용：神経・筋疾患　> BMH = A, PBSCH = B로 검색하면 D판정된 아이템이 1건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
+            listFilter(result, result3);
+            
         } else if (result.length == 1 && result3.length == 0) {
+            // 키워드 검색이 있고 결과값이 있으나 AB판정에서의 결과가 0이면 최종 결과는 0으로 설정 (2021.02.12)
+            result = result3
             if (!keyword) {
                 delete result[0];
             }
         } else if (result.length > 1 && result3.length == 0) {
+            
             if (!keyword) {
                 for (var i = 0; i <= result.length; i++) {
                     delete result[i];
@@ -1368,8 +1429,30 @@ FullTextSearch.prototype = {
                 }
             }
         } else {
-            // console.log('result : ', result);
+            // BMH, PBSCH 개별검색이 가능하게 하는 부분
+            // console.log('!!!!!!!!!!!!!!');
+            // console.log('result : ', result)
+            // console.log('result2 : ', result2)
+            // console.log('result3 : ', result3)
+            // console.log('check_bmh : ', check_bmh.length)
+            // console.log('!!!!!!!!!!!!!!');
             listFilter(result, result3);
+            result  = result.filter(function(item) {
+                return item !== null && item !== undefined && item !== '';
+            });
+            // 만약 result은 값이 있으나  result2는 값이 없을 경우 result의 모든 값을 삭제
+            // 테스트 내용：神経・筋疾患　> BMH = C, PBSCH = D로 검색하면 D판정된 아이템이 4건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
+            if (check_bmh.length < 5) {
+                if (result2.length == 0) {
+                    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                    for (var i = 0; i < result.length; i++) {
+                        delete result[i];
+                    }
+                }
+                
+            }
+
+            
         }
 
 
