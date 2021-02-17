@@ -5,7 +5,7 @@
 }
 
 #head-bar .inner{
-    width: 950px;
+    width: 1100px;
     margin: 0 auto;
     padding: 27px 0 8px;
     border-bottom: 1px solid #727272;
@@ -43,7 +43,7 @@
 }
 
 #mv{
-    background-image: url(../img/main-visual.jpg);
+    background-image: url(../img/main-visual2.jpg);
     height: 350px;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -61,7 +61,7 @@
 #mv .mv-title{
     margin: 0 auto 10px;
     display: inline-block;
-    border-bottom: 1px solid #007f41;
+    border-bottom: 1px solid #1d74bb;
     color: #333;
     font-size: 40px;
     line-height: 1.5;
@@ -74,7 +74,7 @@
 }
 
 #topsearch {
-    width: 950px;
+    width: 1100px;
     margin: 0 auto;
 }
 
