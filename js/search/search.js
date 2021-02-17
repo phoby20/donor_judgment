@@ -1676,16 +1676,16 @@ FullTextSearch.prototype = {
 
         table_header   += "<div class='row'>";
         
-        table_header   += "<div class='eight columns' style='font-size:20px;'>";
+        table_header   += "<div class='eight columns' style='font-size:20px; width:858px;'>";
         table_header   += "<span class='info-head'>　　内容</span>";
         table_header   += "</div>";
 
-        table_header   += "<div class='two columns' style='text-align: center; font-size:20px;''>";
-        table_header   += "<span class='info-head'>　BMH</span>";
+        table_header   += "<div class='two columns' style='text-align: center; font-size:20px; width:120px;>";
+        table_header   += "<span class='info-head'>BMH判定</span>";
         table_header   += "</div>";
 
-        table_header   += "<div class='two columns' style='text-align: center; font-size:20px;''>";
-        table_header   += "<span class='info-head'>　PBSCH</span>";
+        table_header   += "<div class='two columns' style='text-align: center; font-size:20px; width:120px;>";
+        table_header   += "<span class='info-head'>PBSCH判定</span>";
         table_header   += "</div>";
 
         table_header   += "</div>";
@@ -1711,15 +1711,15 @@ FullTextSearch.prototype = {
             buf   += "<div class='row'>";
 
 
-            buf   += "<div class='eight columns text-block'>";
+            buf   += "<div class='eight columns text-block' style='width:858px;'>";
 
             buf   += "<dl>";
 
             buf += (d.type == 'pdf') ? '<dt class="pdf">' : '<dt>';
             var href = 'result.html?itemkey=' + d.itemkey;    //itemkeyに直した
-            buf += '<a ';
-            buf += "style='font-size:22px;'"
-            buf += 'href="javascript:void(0);" onclick="location.href=\'' + href + '\';return false;">';
+            // buf += '<a ';
+            // buf += "style='font-size:22px;'"
+            // buf += 'href="javascript:void(0);" onclick="location.href=\'' + href + '\';return false;">';
 
             if (idx_len_title.length > 0) {
 
@@ -1806,7 +1806,8 @@ FullTextSearch.prototype = {
             if (idx_len_body.length > 0) {
                 buf += this.snippet(d.body, idx_len_body);
             } else {
-                buf += d.body.substr(0, this.result_prefix + this.result_suffix);
+                // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
+                buf += d.body;
             }
 
             if (d.author) {
@@ -1827,7 +1828,7 @@ FullTextSearch.prototype = {
 
 
             // BMH 判例イメージ
-            buf   += "<div style='padding-top: 10px; height:100%; width:188px;' class='two columns thumbnail-block'>";
+            buf   += "<div style='margin-top: 10px; margin-left: 40px; width:50px;' class=' columns thumbnail-block'>";
 
             if (d.type == "") {
                 buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
@@ -1856,7 +1857,7 @@ FullTextSearch.prototype = {
 
 
             // PBSCH 判例イメージ
-            buf   += "<div style='padding-top: 10px; margin:0px; width:154.5px;' class='two columns thumbnail-block'>";
+            buf   += "<div style='margin: 10px; margin-left: 65px; width:50px;' class=' columns thumbnail-block'>";
 
             if (d.state == "") {
                 buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
