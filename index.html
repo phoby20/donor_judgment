@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>日本骨髄バンク　ドナー適格性判定</title>
+<link href="css/normalize.css" rel="stylesheet" type="text/css">
+<link href="css/skeleton-custom.css" rel="stylesheet" type="text/css">
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<link href="css/page.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="js/class-select.js"></script>
+<script type="text/javascript" language="javascript">
+
+var ageArr = new Array(); //필터 내용을 저장하는 배열 
+var showFilterValue = document.getElementById("showFilter");
+
+// 
+function rel() {
+    if (window.name != "any") {
+      location.reload();
+      window.name = "any";
+    } else {
+      window.name = "";
+    }
+  }
+
+
+
+
+
+
+
+
+    // 全体選択機能
+    // window.onload = function(){
+    //     var hobbyAllBtn = document.getElementById('SelectAllBtn');
+
+    //     hobbyAllBtn.addEventListener('click', function(){
+    //         checkedAll('refine1');
+    //     });
+
+    //     function checkedAll(checkType){
+    //         for(var i = 0; i < document.getElementsByName(checkType).length; i++){
+    //             document.getElementsByName(checkType)[i].checked = true;
+    //         }
+    //     }
+    // }
+    
+
+    // 検索ボタン押下時処理
+    function onSearchClick() {
+
+        // 年（From、To）の入力チェック（script.jsの関数呼び出し）
+        if (!checkInputedYear()) {
+            return false;
+        }
+
+        // キーワード
+        // mainKeyword = document.forms.sitesearch.inkeyword.value;
+        mainKeyword = document.forms.sitesearch.inkeywords.value + "　";
+        
+        var allKeyword = "";
+        var len = document.sitesearch.chkBox.length;
+        if ((len === undefined) && (document.sitesearch.chkBox.checked == true)) {
+            chkdata[i] = document.sitesearch.chkBox[i].value;
+            allKeyword = "　";
+        } else {
+            for (i = 0; i < len; i++) {
+                if (document.sitesearch.chkBox[i].checked) {
+                    // alert(document.sitesearch.chkBox[i].value);
+                    allKeyword += document.sitesearch.chkBox[i].value + "　";
+                }
+            }
+        }
+        allKeyword += mainKeyword;
+        document.getElementById('sendKey').value = allKeyword;
+
+
+        
+        // BMH
+        // mainKeyword2 = document.forms.sitesearch.inkeyword.value;
+        var allKeyword2 = "";
+        var len2 = document.sitesearch.chkBox_bmh.length;
+        if ((len2 === undefined) && (document.sitesearch.chkBox_bmh.checked == true)) {
+            chkdata2[i] = document.sitesearch.chkBox_bmh[i].value;
+            allKeyword2 = "　";
+        } else {
+            for (i = 0; i < len2; i++) {
+                if (document.sitesearch.chkBox_bmh[i].checked) {
+                    allKeyword2 += document.sitesearch.chkBox_bmh[i].value + "　";
+                }
+            }
+        }
+        // allKeyword += mainKeyword2;
+        // console.log(len);
+        document.getElementById('sendKey2').value = allKeyword2;
+
+
+
+
+
+        // PBSCH
+        var allKeyword3 = "";
+        var len3 = document.sitesearch.chkBox_pbsch.length;
+        if ((len3 === undefined) && (document.sitesearch.chkBox_pbsch.checked == true)) {
+            chkdata3[i] = document.sitesearch.chkBox_pbsch[i].value;
+            allKeyword3 = "　";
+        } else {
+            for (i = 0; i < len3; i++) {
+                if (document.sitesearch.chkBox_pbsch[i].checked) {
+                    allKeyword3 += document.sitesearch.chkBox_pbsch[i].value + "　";
+                }
+            }
+        }
+        document.getElementById('sendKey3').value = allKeyword3;
+            return true;
+    }
+
+
+
+    // // 検索ボタン押下時処理
+    // function onSearchClick2() {
+
+    // // 年（From、To）の入力チェック（script.jsの関数呼び出し）
+    // if (!checkInputedYear()) {
+    //     return false;
+    // }
+
+    // // キーワード
+    // mainKeyword2 = document.forms.sitesearch.inkeyword.value;
+    // var allKeyword = "";
+    // var len = document.sitesearch.chkBox_bmh.length;
+    // if ((len === undefined) && (document.sitesearch.chkBox_bmh.checked == true)) {
+    //     chkdata[i] = document.sitesearch.chkBox_bmh[i].value;
+    //     allKeyword = "　";
+    // } else {
+    //     for (i = 0; i < len; i++) {
+    //         if (document.sitesearch.chkBox_bmh[i].checked) {
+    //             allKeyword += document.sitesearch.chkBox_bmh[i].value + "　";
+    //         }
+    //     }
+    // }
+    // // allKeyword += mainKeyword2;
+    // console.log(len);
+    // document.getElementById('sendKey2').value = allKeyword;
+
+    // return true;
+    // }
+</script>
+</head>
+
+<body onLoad="rel()">
+<div id="head-bar">
+    <div class="inner">
+        <div class="head-title-block">
+            <a href="index.html">
+                <h1 class="head-title">日本骨髄バンク ドナー適格性判定</h1>
+                <!-- <p class="head-title-sub">SANYO DOCUMENT SEARCH</p> -->
+            </a>
+        </div>
+    </div>
+</div>
+<!--検索-->
+<div id="topsearch">
+    <div id="mv">
+        <div class="mv-title-block">
+            <h2 class="mv-title">ドナー適格性判定</h2>
+            <p class="mv-text">（BMH/PBSCH）</p>
+        </div>
+    </div>
+    <form id="sitesearch" name="sitesearch" action="search.html" method="get">
+
+        <div class="form-block">
+            <div class="row tr">
+                <div class="two columns th" style="height:50px;">
+                    <span>キーワード</span><!-- <span class="required">必須</span> -->
+                </div>
+                <div class="nine columns td">
+                    <input size="20" type="text" id="inkeyword" name="inkeywords" class="keyword" placeholder="キーワードを入力してください" />
+                    <button style="display: none;" title="検索" type="submit" class="formbtn" name="submit1" onclick="return onSearchClick();">検　索</button>
+                </div>
+            </div>
+
+            
+
+
+            <!-- ここからは displayを noneに設定 -->
+            <!-- <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>形態</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <li><label><input type="radio" name="refine1" value="紙資料"><span> 紙資料</span></label></li>
+                        <li><label><input type="radio" name="refine1" value="書簡"><span> 書簡</span></label></li>
+                        <li><label><input type="radio" name="refine1" value="はがき"><span> はがき</span></label></li>
+                        <li><label><input type="radio" name="refine1" value="冊子"><span> 冊子</span></label></li>
+                        <li><label><input type="radio" name="refine1" value="カセットテープ"><span> カセット</span></label></li>
+                        <li><label><input type="radio" name="refine1" value="null" checked><span> すべて</span></label></li>
+                    </ul>
+                </div>
+            </div> -->
+            <!-- <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>作成年代</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <li><label><input type="radio" name="refine2" value="18"><span> 1800年代</span></label></li>
+                        <li><label><input type="radio" name="refine2" value="19"><span> 1900年代</span></label></li>
+                        <li><label><input type="radio" name="refine2" value="20"><span> 2000年代</span></label></li>
+                        <li><label><input type="radio" name="refine2" value="null" checked><span> すべて</span></label></li>
+                    </ul>
+                </div>
+            </div> -->
+            <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>作成年</span>
+                </div>
+                <div class="nine columns td">
+                    <input type="text" name="yearfrom" size="4" minlength="4" maxlength="4" placeholder="0000" />年
+                    ～
+                    <input type="text" name="yearto" size="4" minlength="4" maxlength="4" placeholder="0000" />年
+                </div>
+            </div>
+            <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>画像の有無</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <li><label><input type="radio" name="hasimage" value="1"><span> 画像あり</span></label></li>
+                        <li><label><input type="radio" name="hasimage" value="2"><span> 画像なし</span></label></li>
+                        <li><label><input type="radio" name="hasimage" value="null" checked><span> すべて</span></label></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ここまでが display none -->
+            
+            <!-- ここまでが display none -->
+
+
+            <div class="row tr">
+                <div class="two columns th" style="height:256px;">
+                    <span>区分</span>
+                </div>
+                <div class="nine columns td">
+                    <!-- <p class="keyword-category">区分</p> -->
+                    <ul class="checkList" id="first-menu">
+                        <div class="chk_group">
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="臨床的な問題" onclick="category1(this);"><span> 臨床的な問題</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="呼吸器疾患" onclick="category1(this);"><span> 呼吸器疾患</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="循環器疾患" onclick="category1(this);"><span> 循環器疾患</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="消化器疾患" onclick="category1(this);"><span> 消化器疾患</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="肝・胆・膵疾患" onclick="category1(this);"><span> 肝・胆・膵疾患</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="代謝・栄養疾患" onclick="category1(this);"><span> 代謝・栄養疾患</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="内分泌疾患" onclick="category1(this);"><span> 内分泌疾患</span></label></li>
+                            <li style="margin:0px; width: 180px;"><label><input type="radio" name="chkBox" value="血液・造血器疾患" onclick="category1(this);"><span> 血液・造血器疾患</span></label></li>
+                        </div>
+                        <div class="chk_group">
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="腎・尿路疾患、水電解質異常" onclick="category1(this);"><span> 腎・尿路疾患、水電解質異常</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="遺伝性疾患" onclick="category1(this);"><span> 遺伝性疾患</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="神経・筋疾患" onclick="category1(this);"><span> 神経・筋疾患</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="感染症、性病、寄生虫疾患" onclick="category1(this);"><span> 感染症、性病、寄生虫疾患</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="リウマチ性疾患、アレルギー性疾患" onclick="category1(this);"><span> リウマチ性疾患、アレルギー性疾患</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="中毒、環境要因による疾患" onclick="category1(this);"><span> 中毒、環境要因による疾患</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="整形外科疾患" onclick="category1(this);"><span> 整形外科疾患</span></label></li>
+                            <li style="margin:0px; width: 320px;"><label><input type="radio" name="chkBox" value="婦人科疾患" onclick="category1(this);"><span> 婦人科疾患</span></label></li>
+                        </div>
+                        <div class="chk_group">
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="精神科疾患" onclick="category1(this);"><span> 精神科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="耳鼻科疾患" onclick="category1(this);"><span> 耳鼻科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="皮膚科疾患" onclick="category1(this);"><span> 皮膚科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="眼科" onclick="category1(this);"><span> 眼科</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="歯科疾患" onclick="category1(this);"><span> 歯科疾患</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="臓器移植・提供" onclick="category1(this);"><span> 臓器移植・提供</span></label></li>
+                            <li style="margin:0px; width: 400px;"><label><input type="radio" name="chkBox" value="美容法・健康法・アンチエイジング療法" onclick="category1(this);"><span> 美容法・健康法・アンチエイジング療法</span></label></li>
+                            <li style="margin:0px;"><label><input type="radio" name="chkBox" value="その他" onclick="category1(this);"><span> その他</span></label></li>
+                        </div>
+                    </ul>
+                    <!-- <p class="keyword-category">項目</p>
+                    <ul class="checkList">
+                        <li><label><input type="checkbox" name="chkBox" value="周年史制作"><span> 周年史制作</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox" value="周年記念行事"><span> 周年記念行事</span></label></li>
+                    </ul> -->
+                    <!-- <p class="keyword-category">BMH</p>
+                    <ul class="checkList">
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_bmh" value="D"><span> D</span></label></li>
+                    </ul> -->
+                    <!-- <p class="keyword-category">PBSCH</p>
+                    <ul class="checkList">
+                        <li><label><input type="checkbox" name="chkBox" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox" value="D"><span> D</span></label></li>
+                    </ul> -->
+                    <!-- <p class="keyword-category">教職員関係</p>
+                    <ul class="checkList">
+                        <li><label><input type="checkbox" name="chkBox" value="職員会議関係資料"><span> 職員会議関係資料</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox" value="教務日誌"><span> 教務日誌</span></label></li>
+                    </ul>
+                    <p class="keyword-category">学園・学校の基本情報</p>
+                    <ul class="checkList">
+                        <li><label><input type="checkbox" name="chkBox" value="寄附行為"><span> 寄附行為</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox" value="学校案内・学校要覧"><span> 学校案内・学校要覧</span></label></li>
+                    </ul> -->
+                    <!-- <p class="keyword-note">※資料名・資料概要を検索します。大分類－中分類による検索もあわせてご活用ください。</p> -->
+                </div>
+            </div>
+
+            <div class="row tr">
+                <div class="two columns th" style="height:50px;">
+                    <span>項目</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="selectList">
+                        <li>
+                            <label for="class1" style="display: none;">分類１：</label>
+                            <select id="class1" name="class1">
+                            </select>
+                        </li>
+                        
+                        <li style="display: none;">
+                            <label for="class2">分類２：</label>
+                            <select id="class2" name="class2">
+                            </select>
+                        </li>
+                        <li style="display: none;">
+                            <label for="class3">小分類：</label>
+                            <select id="class3" name="class3">
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+            <div class="row tr">
+                <div class="two columns th">
+                    <span style="font-size: 14px;">BMH判定</span>
+                </div>
+                <div class="four columns td">
+                    <ul class="checkList">
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="A"><span style=" margin-right:20px;"> A適格</span></label></li>
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="B"><span style=" margin-right:20px;"> B要検討</span></label></li>
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="C"><span style=" margin-right:20px;"> C不適格</span></label></li>
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="D"><span> D絶対不適格</span></label></li>
+                    </ul>
+                </div>
+                <div class="two columns th">
+                    <span style="font-size: 14px;">PBSCH判定</span>
+                </div>
+                <div class="four columns td">
+                    <ul class="checkList">
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="A"><span style=" margin-right:20px;"> A適格</span></label></li>
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="B"><span style=" margin-right:20px;"> B要検討</span></label></li>
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="C"><span style=" margin-right:20px;"> C不適格</span></label></li>
+                        <li style="font-size: 10px;"><label><input type="checkbox" name="chkBox_bmh" value="D"><span> D絶対不適格</span></label></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>⑤ PBSCH判定</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <!-- <li><label><input type="button" id="SelectAllBtn" value="Select All"/></label></li> -->
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="A"><span> A適格</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="B"><span> B要検討</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="C"><span> C不適格</span></label></li>
+                        <li><label><input type="checkbox" name="chkBox_pbsch" value="D"><span> D絶対不適格</span></label></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- 以下は非表示 -->
+            <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>BMH (type)</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <!-- select all ボタンを　Onにしたいときにコメント解除 -->
+                        <!-- <li><label><input type="button" id="SelectAllBtn" value="Select All"/></label></li> -->
+                        <li><label><input type="checkbox" name="refine1" value="null" checked><span> すべて</span></label></li>
+                        <li><label><input type="checkbox" name="refine1" value="A" onchange="makeFilter(this);"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="refine1" value="B" onchange="makeFilter(this);"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="refine1" value="C" onchange="makeFilter(this);"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="refine1" value="D" onchange="makeFilter(this);"><span> D</span></label></li>
+                        <!-- <li><label><input type="checkbox" name="refine1" value="E" onchange="makeFilter(this);"><span> E</span></label></li>
+                        <li><label><input type="checkbox" name="refine1" value="F" onchange="makeFilter(this);"><span> F</span></label></li> -->
+                        <!-- <li><label><input type="checkbox" name="refine1" value="-"><span> -</span></label></li> -->
+                        <!-- <input type="text" id="showFilter"/> -->
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="row tr" style="display: none;">
+                <div class="three columns th">
+                    <span>PBSCH (state)</span>
+                </div>
+                <div class="nine columns td">
+                    <ul class="checkList upper">
+                        <li><label><input type="checkbox" name="refine2" value="null" checked><span> すべて</span></label></li>
+                        <li><label><input type="checkbox" name="refine2" value="A"><span> A</span></label></li>
+                        <li><label><input type="checkbox" name="refine2" value="B"><span> B</span></label></li>
+                        <li><label><input type="checkbox" name="refine2" value="C"><span> C</span></label></li>
+                        <li><label><input type="checkbox" name="refine2" value="D"><span> D</span></label></li>
+                        <!-- <li><label><input type="checkbox" name="refine2" value="E"><span> E</span></label></li>
+                        <li><label><input type="checkbox" name="refine2" value="F"><span> F</span></label></li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- ここまでは非表示 -->
+
+
+
+
+        </div>
+        <!-- /.form-block -->
+
+        <div class="btnArea">
+            <button title="検索" type="submit" class="formbtn large" name="submit2" onclick="onSearchClick();">検　索</button>
+        </div>
+        <input id="sendKey" type="hidden" name="keyword" value="">
+        <input id="sendKey2" type="hidden" name="bmh" value="">
+        <input id="sendKey3" type="hidden" name="pbsch" value="">
+    </form>
+
+
+    <div class="hr"></div>
+    <div id="memo">
+        <h4>検索方法について</h4>
+        <ul>
+            <li>キーワードのみの検索も可能。</li>
+        </ul>
+    </div>
+    <div id="footer"> Copyright &copy; JMDP. All Rights Reserved. </div>
+</div>
+<!--検索-->
+</body>
+
+</html>

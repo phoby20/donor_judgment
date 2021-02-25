@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>詳細</title>
+<script type="text/javascript" src="js/search/output.js"></script>
+<script type="text/javascript" src="js/search/testdata_set.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/colorbox/jquery.colorbox-min.js"></script>
+<link href="css/normalize.css" rel="stylesheet" type="text/css">
+<link href="css/skeleton-custom.css" rel="stylesheet" type="text/css">
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<link href="css/page.css" rel="stylesheet" type="text/css">
+<link href="css/result.css" rel="stylesheet" type="text/css">
+<link href="js/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+<div id="head-bar">
+    <div class="inner">
+        <div class="head-title-block">
+            <a href="index.html">
+                <h1 class="head-title">ドナー適格性判定</h1>
+                <!-- <p class="head-title-sub">SANYO DOCUMENT SEARCH</p> -->
+            </a>
+        </div>
+    </div>
+</div>
+<div id="wrap">
+
+    <!-- table -->
+    <script type="text/javascript">writeTxt('itemkey');</script>
+    <!--table -->
+
+    <div class="bottomBtnBlock">
+        <button class="formbtn large normal" onClick="history.back(); return false;">前のページにもどる</button>
+    </div>
+    <div id="footer"> Copyright &copy; JMDP. All Rights Reserved. </div>
+
+</div>
+<script>
+$(document).ready(function(){
+    $(".btn-audio").colorbox({inline:true, width:"50%", height:"30%"});
+    $(".btn-video").colorbox({inline:true, width:"50%"});
+});
+</script>
+</body>
+</html>
