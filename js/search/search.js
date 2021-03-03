@@ -704,6 +704,7 @@ FullTextSearch.prototype = {
         //キーワード入力ありの場合
             query= this.splitKeyword(keyword);
         }
+        // console.log(query);
 
         //bmh入力ありの場合
         if (bmh != ""){
@@ -1376,12 +1377,16 @@ FullTextSearch.prototype = {
             }
             
         }
-
+        // console.log(result.length);
         if (result.length == 1 ) {
             result = result;
+        // } else if (result.length > 1 && result2 <=1) {
+        //     result = result;
+        //     console.log('ここにヒットする！');
         } else {
             listFilter(result, result2);
         }
+        // console.log(result);
    
 
         // console.log(result_original);
