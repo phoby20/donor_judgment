@@ -5,9 +5,9 @@ $(document).ready(function(){
     objFullTextSearch.init(data, document.location.search);
     objFullTextSearch.initElement('stat', 'navi1', 'navi2', 'result');
 
-        // console.log("bmh", objFullTextSearch.bmh);
-        // console.log("pbsch", objFullTextSearch.pbsch);
-        // console.log("keyword", objFullTextSearch.keyword);
+        console.log("bmh", objFullTextSearch.bmh);
+        console.log("pbsch", objFullTextSearch.pbsch);
+        console.log("keyword", objFullTextSearch.keyword);
 
         // console.log("check_bmh", objFullTextSearch.check_bmh);
         // console.log("check_pbsch", objFullTextSearch.check_pbsch);

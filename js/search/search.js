@@ -146,6 +146,9 @@ FullTextSearch.prototype = {
 
         this.check_bmh = this.getParam4(this.check_bmh);  //check_bmh 検索
         this.check_pbsch = this.getParam5(this.check_pbsch);  //check_pbsch 検索
+
+        console.log('this.bmh', this.bmh);
+        console.log('this.check_pbsch', this.check_pbsch);
         
 
         this.refine1 = this.getParam_refine1(this.param_refine1);        //絞り込みキーワード取り出し
@@ -1124,6 +1127,7 @@ FullTextSearch.prototype = {
                 // console.log(res);
             }
             // console.log(keyword);
+            // console.log(res);
 
 
 
@@ -1247,7 +1251,12 @@ FullTextSearch.prototype = {
 
 
 
-            if (!res || res.length == 0) continue;
+            if (!res || res.length == 0) {
+                // console.log('!!!!!!!!!!!!!!');
+                continue;
+            }
+            // console.log(res.length);
+            
             rg_per = Math.round(rg_cnt / (d_length) * 100000) / 1000;
             // console.log(rg_per);
 
@@ -1281,6 +1290,7 @@ FullTextSearch.prototype = {
             if (!res2 || res2.length == 0) {
                 // BMH PBSCH 둘다 없는 경우
                 if (!res3 || res3.length == 0) {
+                    // console.log('!!!!!!!!!!!!!!');
                     continue
                 }
                 // 결과 2(BMH)는 없고 결과 3(PBSCH)은 있는 경우
@@ -1314,9 +1324,9 @@ FullTextSearch.prototype = {
             // result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
 
         }
-        // console.log(result);
-        // console.log(result2);
-        // console.log(result3);
+        // console.log('result', result.length);
+        // console.log('result2', result2.length);
+        // console.log('result3', result3.length);
 
         // --------------------------------------------------------------------------------------------------------------------------------------------
         
@@ -1377,19 +1387,26 @@ FullTextSearch.prototype = {
             }
             
         }
+        // listFilter함수 끝
+
+
+
+
         // console.log(result.length);
-        if (result.length == 1 ) {
-            result = result;
-        // } else if (result.length > 1 && result2 <=1) {
+        // if (result.length == 1 ) {
         //     result = result;
-        //     console.log('ここにヒットする！');
-        } else {
-            listFilter(result, result2);
-        }
+        // // } else if (result.length > 1 && result2 <=1) {
+        // //     result = result;
+        // //     console.log('ここにヒットする！');
+        // } else {
+        //     listFilter(result, result2);
+        // }
         // console.log(result);
    
 
         // console.log(result_original);
+
+        let difference = this.bmh.filter(x => this.pbsch.includes(x)); // bmh와 pbsch의 리스트가 겹치는 항목이 있는지 확인
 
         result  = result.filter(function(item) {
             return item !== null && item !== undefined && item !== '';
@@ -1399,80 +1416,184 @@ FullTextSearch.prototype = {
         });
         // console.log(result);
 
-        
+        console.log('result', result.length);
+        console.log('result2', result2.length);
+        console.log('result3', result3.length);
 
-        if ( result.length == 0 ) {
-            listFilter(result_original, result3);
-        } else if (result.length == 1 && result3.length != 0) {
-            // 테스트 내용：神経・筋疾患　> BMH = A, PBSCH = B로 검색하면 D판정된 아이템이 1건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
-            listFilter(result, result3);
+        console.log('this.check_bmh', this.check_bmh[0].length);
+        console.log('this.check_pbsch', this.check_pbsch[0].length);
+
+        // ------------------------------------------------------새로 만든 검색 로직 （2021-03-08）-----------------------------------------------------------
+        if ( result.length == 0 && result2.length == 0 && result3.length == 0 ) {
+            console.log('1번');
             
-        } else if (result.length == 1 && result3.length == 0) {
-            // 키워드 검색이 있고 결과값이 있으나 AB판정에서의 결과가 0이면 최종 결과는 0으로 설정 (2021.02.12)
-            
-            if (check_bmh.length < 5) {
-                if (result3.length >= 1) {
-                    // console.log('!!!!!!!!!!!!!!');
-                    result = result3
-                }
-                
-                // console.log('!!!!!!!!!!!!!!');
-                if (!keyword) {
-                    delete result[0];
-                }
-            } else if (check_pbsch.length < 5) {
+        } else if  (result.length >= 1 && result2.length == 0 && result3.length == 0 ) { //키워드 검색만 했을 경우 && bmp와 pbsch의 검색 결과가 없을 경우
+            console.log('2번');
+            if (this.check_bmh[0].length > 1 && this.check_pbsch[0].length > 1) { // bmhとpbsch를 선택하지 않았을때의 처리
+                console.log('2-1번');
+                return result.reverse()
+            } else if (this.check_bmh[0].length == 1 && this.check_pbsch[0].length > 1) { // bmh만 선택했을때의 처리
+                console.log('2-2번');
+                result = result2
+            } else if (this.check_bmh[0].length > 1 && this.check_pbsch[0].length == 1) { // pbsch만 선택했을때의 처리
+                console.log('2-3번');
                 result = result3
-                if (!keyword) {
-                    delete result[0];
-                }
-            }
-            
-            
-        } else if (result.length > 1 && result3.length == 0) {
-            if (!keyword) {
-                for (var i = 0; i <= result.length; i++) {
-                    delete result[i];
-                }
-            } else if (keyword && !bmh && !pbsch) {
-                result = result;
-            }　else if (keyword && bmh && pbsch) {
-                for (var i = 0; i <= result.length; i++) {
-                    delete result[i];
-                }
-
-                // 새로 추가한 부분 (2021.2.10)
-                //  키워드 검색이 있고 result2 or result3가 있을 경우 result에 result2 or result3를 대입한다
             } else {
-                if (result2) {
-                    result = result2
-                }else if (result3) {
-                    result = result3
+                console.log('2-4번');
+                for (var i = 0; i < result.length; i++) {
+                    delete result[i];
                 }
             }
-        } else {
-            // BMH, PBSCH 개별검색이 가능하게 하는 부분
-            // console.log('!!!!!!!!!!!!!!');
-            // console.log('result : ', result)
-            // console.log('result2 : ', result2)
-            // console.log('result3 : ', result3)
-            // console.log('check_bmh : ', check_bmh.length)
-            // console.log('!!!!!!!!!!!!!!');
+        } else if (result.length == 0 && result2.length >= 1 && result3.length == 0 ) {
+            console.log('3번');
+
+        } else if (result.length == 0 && result2.length == 0 && result3.length >= 1 ) {
+            console.log('4번');
+            result = result3
+
+        } else if (result.length >= 1 && result2.length >= 1 && result3.length == 0 ) {
+            console.log('5번');
+            listFilter(result, result2);
+
+        } else if (result.length == 0 && result2.length >= 1 && result3.length >= 1 ) {
+            console.log('6번');
+
+        } else if (result.length >= 1 && result2.length == 0 && result3.length >= 1 ) {
+            console.log('7번');
             listFilter(result, result3);
-            result  = result.filter(function(item) {
-                return item !== null && item !== undefined && item !== '';
-            });
-            // 만약 result은 값이 있으나  result2는 값이 없을 경우 result의 모든 값을 삭제
-            // 테스트 내용：神経・筋疾患　> BMH = C, PBSCH = D로 검색하면 D판정된 아이템이 4건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
-            if (check_bmh.length < 5) {
-                if (result2.length == 0) {
-                    for (var i = 0; i < result.length; i++) {
-                        delete result[i];
+        } else if (result.length >= 1 && result2.length >= 1 && result3.length >= 1 ) {
+            console.log('8번');
+            if (result.length == 377) {
+                console.log('8-1번');
+                for (var i = 0; i < result.length; i++) {
+                    delete result[i];
+                }
+                if (this.check_bmh[0].length == 1 && this.check_pbsch[0].length == 1) { // bmhとpbsch를 선택했때의 처리
+                    console.log('8-1-1번');
+
+                    console.log('this.bmh:', this.bmh, 'this.pbsch:',this.pbsch);
+                    if (difference.length == 1) { // 만약 겹치는 내용이 없다면 모든 검색 결과는 0을 출력
+                        console.log('8-1-2번');
+                        for (var i = 0; i < result.length; i++) {
+                            delete result[i];
+                        }
+                    } else { // 만약 겹치는 부분이 있다면 필터 적용하기
+                        console.log('8-1-3번');
+                        result = result2
+                        listFilter(result, result3);
                     }
                 }
+            } else {
+                console.log('8-2번');
+                listFilter(result, result2);
+                result  = result.filter(function(item) {
+                    return item !== null && item !== undefined && item !== '';
+                });
+                listFilter(result, result3);
             }
+        } else {
+            console.log('9번');
+            if (this.check_bmh[0].length > 1 && this.check_pbsch[0].length > 1) { // bmhとpbsch를 선택하지 않았을때의 처리
+                console.log('9-1번');
+            } else if (this.check_bmh[0].length == 1 && this.check_pbsch[0].length > 1) { // bmh만 선택했을때의 처리
+                console.log('9-2번');
+            } else if (this.check_bmh[0].length > 1 && this.check_pbsch[0].length == 1) { // pbsch만 선택했을때의 처리
+                console.log('9-3번');
+            }
+        }
+        
+        // ---------------------------------------------------------------위의 내용을 만들기 전의 로직------------------------------------------------------------------
+        
+        // if ( result.length == 0 ) {
+        //     // console.log('!!!!!!!!!!!!!!');
+        //     listFilter(result_original, result3);
+        // } else if (result.length == 1 && result3.length != 0) {
+        //     // console.log('!!!!!!!!!!!!!!');
+        //     // 테스트 내용：神経・筋疾患　> BMH = A, PBSCH = B로 검색하면 D판정된 아이템이 1건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
+        //     listFilter(result, result3);
+            
+        // } else if (result.length == 1 && result3.length == 0) {
+        //     // 키워드 검색이 있고 결과값이 있으나 AB판정에서의 결과가 0이면 최종 결과는 0으로 설정 (2021.02.12)
+        //     // console.log('!!!!!!!!!!!!!!');
+        //     if (check_bmh.length < 5) {
+        //         if (result3.length >= 1) {
+        //             // console.log('!!!!!!!!!!!!!!');
+        //             result = result3
+        //         }
+        //         if (result.length == 1 && result2.length == 0) {
+        //             // console.log('!!!!!!!!!!!!!!');
+        //             // 테스트 내용：神経・筋疾患　> けいれん性疾患 > BMH = A로 검색하면 D판정된 아이템이 1건 나왔으나 0건으로 나오도록 변경 (2021.3.5)
+        //             result = result2
+        //         }
+                
+        //         // console.log('!!!!!!!!!!!!!!');
+        //         if (!keyword) {
+        //             delete result[0];
+        //         }
+        //     } else if (check_pbsch.length < 5) {
+        //         // console.log('!!!!!!!!!!!!!!');
+        //         result = result3
+        //         if (!keyword) {
+        //             delete result[0];
+        //         }
+        //     }
+            
+            
+        // } else if (result.length > 1 && result3.length == 0) {
+        //     if (!keyword) {
+        //         console.log('!!!!!!!!!!!!!!');
+        //         for (var i = 0; i <= result.length; i++) {
+        //             delete result[i];
+        //         }
+        //     } else if (keyword && !bmh && !pbsch) {
+        //         // console.log('!!!!!!!!!!!!!!');
+        //         result = result;
+        //     }　else if (keyword && bmh && pbsch) {
+        //         // console.log('!!!!!!!!!!!!!!');
+        //         for (var i = 0; i <= result.length; i++) {
+        //             delete result[i];
+        //         }
+
+        //         // 새로 추가한 부분 (2021.2.10)
+        //         //  키워드 검색이 있고 result2 or result3가 있을 경우 result에 result2 or result3를 대입한다
+        //     } else {
+        //         // console.log('!!!!!!!!!!!!!!');
+        //         if (result2) {
+        //             result = result2
+        //         }else if (result3) {
+        //             result = result3
+        //         }
+        //     }
+        // } else {
+        //     // console.log('!!!!!!!!!!!!!!');
+        //     // BMH, PBSCH 개별검색이 가능하게 하는 부분
+        //     // console.log('!!!!!!!!!!!!!!');
+        //     // console.log('result : ', result)
+        //     // console.log('result2 : ', result2)
+        //     // console.log('result3 : ', result3)
+        //     // console.log('check_bmh : ', check_bmh.length)
+        //     // console.log('!!!!!!!!!!!!!!');
+        //     listFilter(result, result3);
+        //     result  = result.filter(function(item) {
+        //         return item !== null && item !== undefined && item !== '';
+        //     });
+        //     // 만약 result은 값이 있으나  result2는 값이 없을 경우 result의 모든 값을 삭제
+        //     // 테스트 내용：神経・筋疾患　> BMH = C, PBSCH = D로 검색하면 D판정된 아이템이 4건 나왔으나 0건으로 나오도록 변경 (2021.2.12)
+        //     if (check_bmh.length < 5) {
+        //         if (result2.length == 0) {
+        //             for (var i = 0; i < result.length; i++) {
+        //                 delete result[i];
+        //             }
+        //         }
+        //     }
 
             
-        }
+        // }
+
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------------
+        
 
 
 
@@ -1824,10 +1945,13 @@ FullTextSearch.prototype = {
             buf += "</p>";
 
 
-            // console.log(idx_len_body);
+            // console.log(d.body);
             if (idx_len_body.length > 0) {
+                // buf += this.snippet(d.body, idx_len_body);
                 buf += this.snippet(d.body, idx_len_body);
+                // console.log(d.body);
             } else {
+                
                 // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
                 buf += d.body;
             }
@@ -1951,6 +2075,7 @@ FullTextSearch.prototype = {
         //キーワード（強調する文字）の出現位置が無い場合（キーワード未入力の場合）
             return body;
         }
+        // console.log(idx_len);
 
         for (var i = 0, idx_length = idx_len.length; i < idx_length; i++) {
             for (var j = i + 1; j < idx_length; j++) {
@@ -1963,6 +2088,7 @@ FullTextSearch.prototype = {
         }
 
         if (idx_len.length == 1) {
+            // console.log(this.result_suffix);
             var idx   = idx_len[0][0];
             var len   = idx_len[0][1];
             var start = idx_len[0][0] - this.result_prefix;
@@ -1971,7 +2097,8 @@ FullTextSearch.prototype = {
                 "<strong style='background: linear-gradient(to top, yellow 50%, transparent 50%);'>",
                 body.substr(idx, len),
                 "</strong>",
-                body.substr(idx + len, this.result_suffix)
+                // body.substr(idx + len, this.result_suffix)
+                body.substr(idx + len)
             ].join("");
         } else {
             var start  = idx_len[0][0] - this.result_prefix;

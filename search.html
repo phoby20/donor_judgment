@@ -16,6 +16,16 @@
 <script type="text/javascript" src="js/search/search.js"></script>
 <script type="text/javascript" src="js/search/searchInit.js"></script>
 <script type="text/javascript">
+
+    function rel() {
+        if (window.name != "any") {
+          location.reload();
+          window.name = "any";
+        } else {
+          window.name = "";
+        }
+      }
+    
     // 検索ボタン押下時処理
     // function onSearchClick2() {
 
@@ -45,6 +55,9 @@
 
     // return true;
     // }
+
+    // const class1_text = '<option value="null">すべて</option>';
+    // $('select#class1').html(class1_text);
 
     function splitKeyword (s)
     {
@@ -99,7 +112,7 @@
         var nowchkBox_pbsch = result['pbsch'];
         document.getElementById('inputed-keyword').value = nowkeyword;
 
-        // console.log(nowinkeywords);
+        // console.log(nowchkBox_bmh);
 
         // if (chkBox) {
         //     var chkBox = splitKeyword(chkBox);
@@ -155,17 +168,17 @@
 
 
         
-        if(nowclass1){
-            $('select#class1').val(nowclass1);
-            $('select#class1').change();
-        }
-        if(nowclass2){
-            $('select#class2').val(nowclass2);
-            $('select#class2').change();
-        }
-        if(nowclass3){
-            $('select#class3').val(nowclass3);
-        }
+        // if(nowclass1){
+        //     $('select#class1').val(nowclass1);
+        //     $('select#class1').change();
+        // }
+        // if(nowclass2){
+        //     $('select#class2').val(nowclass2);
+        //     $('select#class2').change();
+        // }
+        // if(nowclass3){
+        //     $('select#class3').val(nowclass3);
+        // }
 
     };
 
@@ -198,7 +211,7 @@
                 
             }
         }
-
+        
         // これをチェック解除すると、「区分」検索後、「キーワード」検索をすると、おかしくなる　--------　(?)　解除しても問題なく表示されるので、解除(2021-3-3:?)
         document.getElementById('newkeyword').value += chkboxKeyword;
         
@@ -207,42 +220,44 @@
 
         
         // 前画面で入力されたキーワード
-        console.log(document.getElementById('inputed-keyword').value);
-        // inputedKeyword = document.getElementById('inputed-keyword').value;
-        // inputedKeyword = '';
-        document.getElementById('inputed-keyword').value = '';
+        // console.log(document.getElementById('inputed-keyword').value);
+        inputedKeyword = document.getElementById('inputed-keyword').value;
 
+
+        // inputedKeyword = ''; // 이걸 코멘트 처리하면 「神経・筋疾患」〉「けいれん性疾患」〉BMH = D로 검색했을시 검색히 안되고 코멘트 처리를 안하면 키워드 검색이 초기화가 안됨　＊追記:하기의 ①번의 코드들을 코멘트 처리함으로써 해결
+        document.getElementById('inputed-keyword').value = '';
+        // alert('test');
         if (inputedKeyword.length <= 0) {
             document.getElementById('newkeyword').value = chkboxKeyword;
         }
+        
         // 新たに入力されたキーワード
         keyword = document.getElementById('newkeyword').value;
         // alert(keyword);
-
         
 
+        
+        // ①코드 --- 하기의 코드들을 코멘트 처리함으로써 키워드 검색은 물론「神経・筋疾患」〉「けいれん性疾患」〉BMH = D로 검색했을시의 결과도 정상적으로 처리 (2021-03-08)
         // console.log(inputedKeyword);
-        if (inputedKeyword.length > 0) {
-            if (keyword.length > 0) {
-                document.getElementById('newkeyword').value += "　";
-            } else if (chkboxKeyword) {
-                document.getElementById('newkeyword').value += chkboxKeyword;
-            }
-
-            var test = document.getElementById('newkeyword').value;
-            var el = String(test.split('　'));
-            var qk = el.split(',');
-            var ks = inputedKeyword.split('　');
-            if (ks.includes(qk[0])) {
-                document.getElementById('newkeyword').value = '';
-            }
-            
-          
-            // 検索してから（検索結果画面で）新たな検索ができるように変更（2021.2.25）
-            
-            document.getElementById('newkeyword').value += inputedKeyword;
-            
-        }
+        // if (inputedKeyword.length > 0) {
+        //     if (keyword.length > 0) {
+        //         document.getElementById('newkeyword').value += "　";
+        //         alert('!!!!!!!!!!引っかかる!!!!!!!' + document.getElementById('newkeyword').value + '!!!!!!!!!!!!!!!!!!!!');
+        //     } else if (chkboxKeyword) {
+        //         document.getElementById('newkeyword').value += chkboxKeyword;
+        //     }
+// 
+        //     var test = document.getElementById('newkeyword').value;
+        //     var el = String(test.split('　'));
+        //     var qk = el.split(',');
+        //     var ks = inputedKeyword.split('　');
+        //     if (ks.includes(qk[0])) {
+        //         document.getElementById('newkeyword').value = '';
+        //     }
+        //     // 検索してから（検索結果画面で）新たな検索ができるように変更（2021.2.25）
+        //     // document.getElementById('newkeyword').value += inputedKeyword;
+        // }
+        
 
 
 
@@ -286,7 +301,6 @@
         document.getElementById('sendKey3').value = allKeyword3;
 
         
-
         return true;
     }
 
@@ -327,7 +341,7 @@
 
             <div class="form-block">
                 <!-- <div class="row tr"> -->
-                <div class="row tr" style="display:none;">
+                <div class="row tr" style="display: none;">
                     <div class="two columns th">
                         <span>現在のキーワード</span>
                     </div>
