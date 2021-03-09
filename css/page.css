@@ -350,13 +350,13 @@ input[type="button"].link:hover {
     background-color: #eee;
 }
 #result .thumbnail-block {
-    min-height: 120px;
+    /* min-height: 120px; */
     text-align: center;
     padding: 10px 0;
 }
 #result .text-block {
-    min-height: 140px;
-    background-color: #fff;
+    /* min-height: 140px; */
+    /* background-color: #fff; */
     padding: 10px;
 }
 #result .thumbnail-img {

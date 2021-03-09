@@ -687,7 +687,7 @@ FullTextSearch.prototype = {
     ,
     find : function (keyword,bmh,pbsch,check_bmh,check_pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
-        // console.log(check_bmh);
+        // console.log('check_bmh:', check_bmh);
         // console.log(check_pbsch);
 
         if (!refine1) return [];
@@ -714,6 +714,7 @@ FullTextSearch.prototype = {
             
             query2= this.splitKeyword(bmh);
         }
+        // console.log('query2:', query2);
 
         //pbsch入力ありの場合
         if (pbsch != ""){
@@ -819,6 +820,7 @@ FullTextSearch.prototype = {
             } else {
                 reg2.push(/(.)/);
             }
+            // console.log('reg2：', reg2);
 
 
 
@@ -895,7 +897,7 @@ FullTextSearch.prototype = {
                     };
                 }
             }
-            // console.log(reg_g2);
+            // console.log('reg_g2:', reg_g2);
         }
 
 
@@ -1007,6 +1009,7 @@ FullTextSearch.prototype = {
 
 
 // --------------------------------- OK -------------------------------------
+            // console.log('reg_s2.length:', reg_s2.length);
             //BMHの複数指定の場合
             if (reg_s2.length > 0) {
                 for (var p = 0; p < d_key2.length; p++) {
@@ -1036,7 +1039,7 @@ FullTextSearch.prototype = {
                     }
                 }
             }
-            // console.log(this.dataset);
+            // console.log('res2:', res2);
 
 
 
@@ -1247,19 +1250,21 @@ FullTextSearch.prototype = {
 
 
 
+            // console.log(res2);
 
+            // ------------------------------------------------- index에서 AB 검색이 되도록 하기 코드 삭제 ---------------------------- (2021/3/9)
+            // if (!res || res.length == 0) {
+            //     // console.log('!!!!!!!!!!!!!!');
+            //     continue;
+            // }
+            // ----------------------------------------------------------------------------------------------------------------
 
-
-
-            if (!res || res.length == 0) {
-                // console.log('!!!!!!!!!!!!!!');
-                continue;
-            }
+            // console.log(res2);
             // console.log(res.length);
             
             rg_per = Math.round(rg_cnt / (d_length) * 100000) / 1000;
             // console.log(rg_per);
-
+            
             for (var j = 0; j < res.length; j++) {
                 if (res[j][1] == 'title') {
                     idx_len_title[idx_len_title.length] = [res[j][0].index, res[j][0][0].length];
@@ -1288,6 +1293,7 @@ FullTextSearch.prototype = {
 
             // --------------------------------------------- BMH PBSCH 크로스 체크 ---------------------------------------------
             if (!res2 || res2.length == 0) {
+                // console.log('!!!!!!!!!!!!!!');
                 // BMH PBSCH 둘다 없는 경우
                 if (!res3 || res3.length == 0) {
                     // console.log('!!!!!!!!!!!!!!');
@@ -1299,6 +1305,7 @@ FullTextSearch.prototype = {
                     result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
                 }
             } else if (res2 || res2.length <= 1) {
+                // console.log('!!!!!!!!!!!!!!');
                 // 결과 2(BMH)만 있고 결과 3(PBSCH)은 없는 경우
                 if (!res3 || res3.length == 0) {
                     rg_per2 = Math.round(rg_cnt2 / (d_length2) * 100000) / 1000;
@@ -1311,6 +1318,8 @@ FullTextSearch.prototype = {
                     rg_per3 = Math.round(rg_cnt3 / (d_length3) * 100000) / 1000;
                     result3[result3.length] = [i, rg_len3, rg_pos3, rg_per3, rg_pnt3];
                 }
+            } else {
+                console.log('!!!!!!!!!!!!!!');
             }
 
             // // BMH 検索時
@@ -1453,7 +1462,23 @@ FullTextSearch.prototype = {
 
         } else if (result.length >= 1 && result2.length >= 1 && result3.length == 0 ) {
             console.log('5번');
-            listFilter(result, result2);
+            
+            
+            if (result.length == 377) {
+                console.log('5-1번');
+                for (var i = 0; i < result.length; i++) {
+                    delete result[i];
+                }
+                result  = result.filter(function(item) {
+                    return item !== null && item !== undefined && item !== '';
+                });
+                // console.log(result2);
+                // result = result2
+                // listFilter(result, result2);
+            }
+            // listFilter(result, result2);
+            result = result2
+            
 
         } else if (result.length == 0 && result2.length >= 1 && result3.length >= 1 ) {
             console.log('6번');
@@ -1822,9 +1847,12 @@ FullTextSearch.prototype = {
         table_header   += "</div>";
         table_header   += "<hr>";
         this.re.innerHTML += table_header;
+        
 
+        title_dic = [];
         for (var i = (offset - 1) * this.max, r_len = r.length; i < r_len; i++) {
-
+            // console.log('r:', r);
+            
             count++;
             if (count > this.max) break;
 
@@ -1839,115 +1867,68 @@ FullTextSearch.prototype = {
             var rg_pnt        = r[i][7];
             var d             = this.dataset[num];
 
+            
+            if (!(title_dic.includes(this.snippet(d.title, idx_len_title)))) {
+                title_dic.push(this.snippet(d.title, idx_len_title));
+                if (idx_len_title.length > 0) {
+                    buf   += "<div class='' style='padding:10px; font-size:20px; border-bottom:1px solid #b8cad6;'>■ ";
+                    buf += this.snippet(d.title, idx_len_title);
+                    buf += "</div>";
+                }
+            }
+            
+
+            
+
             buf   += "<div class='row'>";
 
 
-            buf   += "<div class='ten columns text-block'>";
+            buf   += "<div class='three columns text-block' style='padding-top:20px;'>";
 
             buf   += "<dl>";
 
             buf += (d.type == 'pdf') ? '<dt class="pdf">' : '<dt>';
-            var href = 'result.html?itemkey=' + d.itemkey;    //itemkeyに直した
-            // buf += '<a ';
-            // buf += "style='font-size:22px;'"
-            // buf += 'href="javascript:void(0);" onclick="location.href=\'' + href + '\';return false;">';
 
-            if (idx_len_title.length > 0) {
+            // if (idx_len_title.length > 0) {
+            //     buf += this.snippet(d.title, idx_len_title);
+            // } else {
+            //     buf += (d.title || "無題");
+            // }
 
-                buf += this.snippet(d.title, idx_len_title);
+            // buf += '<br>';
+            buf += "</dd>";
 
-            } else {
-                buf += (d.title || "無題");
-            }
-            // buf += "</a>";
             buf += "<p class='itemkey'>";
-            buf += "<span class='itemkey-head'>　　[項目]　</span>";
+            // buf += "<span class='itemkey-head'>[項目]　</span>";
             if (d.class1) {
                 buf += "<span class='info-data'>" + d.class1 + "</span>";
-                if (d.class2) {
-                    buf += '　>　'
-                    buf += "<span class='info-data'>" + d.class2 + "</span>";
-                }
             } else {
                 buf += "<span class='itemkey-data'> ― </span>";
             }
             buf += "</p>";
+
+
+
+            buf += "</dt>";
+            buf += "</dl>";
+            buf   += "</div>";
+
+            // buf   += "<div class='nine columns text-block' style='border-left:1px solid #b8cad6;'>";
+            buf   += "<div class='nine columns'>";
+            buf   += "<div class='columns' style=' height:100%;'>";
+            // buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+            buf   += "<div class='columns text-block' style='width:650px; min-height: 90px; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+
+
             if (d.type == 'pdf') {
                 buf += this.caption.result_pdf;
             }
 
-            buf += "</dt>";
+      
             buf += "<dd>";
-
-            // if (idx_len_age.length > 0) {
-            //     buf += "<p class=" + '"age"'+">" + this.snippet(d.age, idx_len_age) + "</p>";
-            // } else if(!d.age) {
-            //     buf += "<p class=" + '"age"'+ ">―</p>";
-            // } else {
-            //     buf += "<p class=" + '"age"'+ ">"+ d.age +"</p>";
-            // }
-
-            // buf += "<p class='itemkey'>";
-            // buf += "<span class='itemkey-head'>[項目]　</span>";
-            // if (d.class1) {
-            //     buf += "<span class='info-data'>" + d.class1 + "</span>";
-            //     if (d.class2) {
-            //         buf += '　>　'
-            //         buf += "<span class='info-data'>" + d.class2 + "</span>";
-            //     }
-            // } else {
-            //     buf += "<span class='itemkey-data'> ― </span>";
-            // }
-            // buf += "</p>";
-
-            buf += "<p class='info'>";
-            // buf += "<span class='info-head'>[PBSCH]</span>";
-
-            // if (d.state) {
-            //     buf += "<span class='info-data'>" + d.state + "</span>";
-            // } else {
-            //     buf += "<span class='info-data'> ― </span>";
-            // }
-
-            // buf += "<span class='info-head'>[BMH]</span>";
-
-            // if (d.type) {
-            //     buf += "<span class='info-data'>" + d.type + "</span>";
-            // } else {
-            //     buf += "<span class='info-data'> ― </span>";
-            // }
-
-            // buf += "<span class='info-head'>[大分類]</span>";
-            // if (d.class1) {
-            //     buf += "<span class='info-data'>" + d.class1 + "</span>";
-            // } else {
-            //     buf += "<span class='info-data'> ― </span>";
-            // }
-            // buf += "<span class='info-head'>[中分類]</span>";
-            // if (d.class2) {
-            //     buf += "<span class='info-data'>" + d.class2 + "</span>";
-            // } else {
-            //     buf += "<span class='info-data'> ― </span>";
-            // }
-            // buf += "<span class='info-head'>[小分類]</span>";
-            // if (d.class3) {
-            //     buf += "<span class='info-data'>" + d.class3 + "</span>";
-            // } else {
-            //     buf += "<span class='info-data'> ― </span>";
-            // }
-            // buf += "<span class='info-head'>[配架場所]</span>";
-            // if (d.place) {
-            //     buf += "<span class='info-data'>" + d.place + "</span>";
-            // } else {
-            //     buf += "<span class='info-data'> ― </span>";
-            // }
-
-            buf += "</p>";
-
 
             // console.log(d.body);
             if (idx_len_body.length > 0) {
-                // buf += this.snippet(d.body, idx_len_body);
                 buf += this.snippet(d.body, idx_len_body);
                 // console.log(d.body);
             } else {
@@ -1956,25 +1937,91 @@ FullTextSearch.prototype = {
                 buf += d.body;
             }
 
-            if (d.author) {
-                buf += '<br>';
-                buf += "<hr style='margin-top:20px; margin-bottom:7px; border-color:#e4ebf5;'>";
-                buf += d.author;
-            }
+
+            buf += "</div>";
             
 
-            buf += "</dd>";
-
-
-
-            buf += "</dl>";
-            buf += "</div>";
+            if (!d.author) {
 
 
 
 
             // BMH 判例イメージ
-            buf   += "<div style='margin-top: 10px; margin-left: 10px; width:50px;' class=' columns thumbnail-block'>";
+            buf   += "<div style='margin-top: 10px; margin-left: 10px;height:100%; width:50px;' class=' columns thumbnail-block'>";
+
+            if (d.type == "") {
+                buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+            } else if (d.state == 'A') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
+                buf   += "<p class='arrow_box2'>骨髄採取や末梢血幹細胞採取および移植の支障となるような疾患(器質的、精神的)が無いと思われるものは、コーディネートを進める。患者    患者理由で中止となった時のドナー登録は、継続とする。</p>";
+            } else if (d.state == 'B') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>B</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_b.png' alt='B'>";
+                buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
+            } else if (d.state == 'C') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>C</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_c.png' alt='C'>";
+                buf   += "<p class='arrow_box2'>当面は全身麻酔下での骨髄採取や末梢血幹細胞採取に支障をきたす可能性があると思われるもの。該当する場合は原則としてコーディネートは中止とする。コーディネートを中止としたものは、本人に通知し、一定期間（原則として１年間）ドナー登録を保留とする。内容によっては、取消とする。</p>";
+            } else if (d.state == 'D') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
+                buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
+            } else if (d.type == '【ＤＬＩ】B') {
+                buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
+                buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
+            } else if (d.state == '-') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
+            }
+            buf   += "</div>";
+
+            // PBSCH 判例イメージ
+            buf   += "<div style='margin: 10px; margin-left: 15px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
+
+            if (d.state == "") {
+                buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+            } else if (d.state == 'A') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
+                buf   += "<p class='arrow_box2'>骨髄採取や末梢血幹細胞採取および移植の支障となるような疾患(器質的、精神的)が無いと思われるものは、コーディネートを進める。患者    患者理由で中止となった時のドナー登録は、継続とする。</p>";
+            } else if (d.state == 'B') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>B</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_b.png' alt='B'>";
+                buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
+            } else if (d.state == 'C') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>C</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_c.png' alt='C'>";
+                buf   += "<p class='arrow_box2'>当面は全身麻酔下での骨髄採取や末梢血幹細胞採取に支障をきたす可能性があると思われるもの。該当する場合は原則としてコーディネートは中止とする。コーディネートを中止としたものは、本人に通知し、一定期間（原則として１年間）ドナー登録を保留とする。内容によっては、取消とする。</p>";
+            } else if (d.state == 'D') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
+                buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
+            } else if (d.type == '【ＤＬＩ】B') {
+                buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
+                buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
+            } else if (d.state == '-') {
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
+                // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
+            }
+            buf   += "</div>";
+        }
+            buf += "</div>";
+
+
+
+            // 추가 설명이 있을 경우
+            if (d.author) {
+                buf   += "<div class='columns' style=' height:100%;'>";
+                buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+                // buf += '<br>';
+                buf += "<hr style='margin-top:1px; margin-bottom:7px; border:none;border-top:dashed 1px #b8cad6'>";
+                buf += d.author;
+                buf += "</div>";
+            // BMH 判例イメージ
+            buf   += "<div style='; margin-left: 10px;height:100%; width:50px;' class=' columns thumbnail-block'>";
 
             if (d.type == "") {
                 buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
@@ -2009,7 +2056,7 @@ FullTextSearch.prototype = {
 
 
             // PBSCH 判例イメージ
-            buf   += "<div style='margin: 10px; margin-left: 15px; width:60px;' class=' columns thumbnail-block'>";
+            buf   += "<div style='margin-left: 15px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
 
             if (d.state == "") {
                 buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
@@ -2038,8 +2085,10 @@ FullTextSearch.prototype = {
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
             }
             buf   += "</div>";
-
-
+                buf += "</div>";
+            }
+            
+            buf += "</div>";
 
 
 
