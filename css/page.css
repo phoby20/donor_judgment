@@ -192,6 +192,31 @@
     background-color: #257a9b;
     color: #fff;
 }
+.clearbtn {
+    padding: 0 30px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 29px;
+    line-height: 29px;
+    background-color: #8f9294;
+    color: #fff;
+}
+.clearbtn.large {
+    height: 39px;
+    min-width: 160px;
+    line-height: 39px;
+}
 
 a.formbtn:link,
 a.formbtn:active,
@@ -357,7 +382,7 @@ input[type="button"].link:hover {
 #result .text-block {
     /* min-height: 140px; */
     /* background-color: #fff; */
-    padding: 10px;
+    padding: 12px;
 }
 #result .thumbnail-img {
     margin: auto;

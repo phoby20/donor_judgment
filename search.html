@@ -211,6 +211,7 @@
         }
         
         // これをチェック解除すると、「区分」検索後、「キーワード」検索をすると、おかしくなる　--------　(?)　解除しても問題なく表示されるので、解除(2021-3-3:?)
+        document.getElementById('newkeyword').value += '　';
         document.getElementById('newkeyword').value += chkboxKeyword;
         
 
@@ -226,11 +227,12 @@
         document.getElementById('inputed-keyword').value = '';
         // alert('test');
         if (inputedKeyword.length <= 0) {
-            document.getElementById('newkeyword').value = chkboxKeyword;
+            document.getElementById('newkeyword').value += chkboxKeyword;
         }
         
         // 新たに入力されたキーワード
         keyword = document.getElementById('newkeyword').value;
+        
         // alert(keyword);
         
 
@@ -305,7 +307,7 @@
 </script>
 </head>
 
-<body>
+<body onLoad="rel()">
     <div id="head-bar">
         <div class="inner">
             <div class="head-title-block">
@@ -628,6 +630,7 @@
         <!-- /.form-block -->
 
             <div class="btnArea">
+                <button title="クリア" type="button" class="clearbtn large" onClick="rel();">クリア</button>
                 <button title="検索" type="submit" class="formbtn large" name="submit2" onclick="onSearchClick();">検　索</button>
             </div>
             <!-- <input id="sendKey" type="hidden" name="keyword" value=""> -->

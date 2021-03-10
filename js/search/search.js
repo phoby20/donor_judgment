@@ -147,8 +147,8 @@ FullTextSearch.prototype = {
         this.check_bmh = this.getParam4(this.check_bmh);  //check_bmh 検索
         this.check_pbsch = this.getParam5(this.check_pbsch);  //check_pbsch 検索
 
-        console.log('this.bmh', this.bmh);
-        console.log('this.check_pbsch', this.check_pbsch);
+        // console.log('this.keyword', this.keyword);
+        // console.log('this.check_pbsch', this.check_pbsch);
         
 
         this.refine1 = this.getParam_refine1(this.param_refine1);        //絞り込みキーワード取り出し
@@ -161,13 +161,20 @@ FullTextSearch.prototype = {
         this.class3 = this.getParam_class3(this.param_class3);        //絞り込みキーワード取り出し
     },
     
-    
     initElement : function (stat, navi1, navi2, result)
     {
         this.st = this.getElement(stat);
         this.re = this.getElement(result);
         this.nv1 = this.getElement(navi1);
         this.nv2 = this.getElement(navi2);
+
+        // 페이지 번호를 누르면 스크롤이 탑으로 이동하도록 변경 (2021-03-10)
+        this.nv1.addEventListener('click', function() {
+            window.scrollTo(0, 0);
+        })
+        this.nv2.addEventListener('click', function() {
+            window.scrollTo(0, 0);
+        })
     },
 
     // キーワード検索関数
@@ -682,6 +689,7 @@ FullTextSearch.prototype = {
 
         this.pagenavi(re, this.nv1);
         this.pagenavi(re, this.nv2);
+        
         this.view(re);
     }
     ,
@@ -926,7 +934,13 @@ FullTextSearch.prototype = {
 
 
 
-        var d_key = ['title','body','author','type', 'class1'];
+        // console.log(keyword);
+        if (keyword == ' その他 ')　{
+            var d_key = ['title','body','author','type'];
+        } else {
+            var d_key = ['title','body','author','type', 'class1'];
+        }
+        
 
         var d_key2 = ['type']; //BMH　検索時！
         var d_key3 = ['state']; //PBSCH　検索時！
@@ -1008,7 +1022,7 @@ FullTextSearch.prototype = {
             // console.log(res);
 
 
-// --------------------------------- OK -------------------------------------
+            // --------------------------------- OK -------------------------------------
             // console.log('reg_s2.length:', reg_s2.length);
             //BMHの複数指定の場合
             if (reg_s2.length > 0) {
@@ -1250,13 +1264,58 @@ FullTextSearch.prototype = {
 
 
 
-            // console.log(res2);
+            // console.log(this.check_bmh[0].length);
 
-            // ------------------------------------------------- index에서 AB 검색이 되도록 하기 코드 삭제 ---------------------------- (2021/3/9)
+            // ------------------------------------------------- index에서 AB 검색이 되도록 하기 코드 삭제 하지만 이렇게 되면 키워드 검색이 안됨 ---------------------------- (2021/3/9)
             // if (!res || res.length == 0) {
             //     // console.log('!!!!!!!!!!!!!!');
             //     continue;
             // }
+            // ------------------------------------------------- 上記のコードを下記のように修正 ---------------------------- (2021/3/10)
+            // console.log('res.length:', res.length);
+            // console.log('this.check_bmh[0]', this.check_bmh[0]);
+            // console.log('this.check_pbsch[0]', this.check_pbsch[0]);
+            // console.log('keyword:', keyword, 'keyword.length:', keyword.length);
+            if (keyword.length == 1 && this.check_bmh[0].length > 1 && this.check_pbsch[0].length > 1){
+                // console.log('case1');
+            } else if (keyword.length >= 2 && this.check_bmh[0].length <= 1 && this.check_pbsch[0].length <= 1) {
+                // console.log('case2');
+                if (!res || res.length == 0) {
+                    continue;
+                }
+            } else if (keyword.length == 1 && this.check_bmh[0].length > 1 && this.check_pbsch[0].length <= 1) {
+                // console.log('case3');
+            } else if (keyword.length == 1 && this.check_bmh[0].length <= 1 && this.check_pbsch[0].length > 1) {
+                // console.log('case4');
+                
+            } else if (keyword.length >= 2 && this.check_bmh[0].length > 1 && this.check_pbsch[0].length <= 1) {
+                // console.log('case5');
+                if (!res || res.length == 0) {
+                    continue;
+                }
+            } else if (keyword.length == 1 && this.check_bmh[0].length > 1 && this.check_pbsch[0].length > 1) {
+                // console.log('case6');
+                if (!res || res.length == 0) {
+                    continue;
+                }
+            } else if (keyword.length >= 2 && this.check_bmh[0].length <= 1 && this.check_pbsch[0].length > 1) {
+                // console.log('case7');
+                if (!res || res.length == 0) {
+                    continue;
+                }
+            } else if (keyword.length >= 2 && this.check_bmh[0].length > 1 && this.check_pbsch[0].length > 1) {
+                // console.log('case8');
+                if (!res || res.length == 0) {
+                    continue;
+                }
+            } else if (keyword.length == 1 && this.check_bmh[0].length <= 1 && this.check_pbsch[0].length <= 1) {
+                // console.log('case9');
+            } else {
+                // console.log('case10');
+                if (!res || res.length == 0) {
+                    continue;
+                }
+            }
             // ----------------------------------------------------------------------------------------------------------------
 
             // console.log(res2);
@@ -1429,8 +1488,8 @@ FullTextSearch.prototype = {
         console.log('result2', result2.length);
         console.log('result3', result3.length);
 
-        console.log('this.check_bmh', this.check_bmh[0].length);
-        console.log('this.check_pbsch', this.check_pbsch[0].length);
+        // console.log('this.check_bmh', this.check_bmh[0].length);
+        // console.log('this.check_pbsch', this.check_pbsch[0].length);
 
         // ------------------------------------------------------새로 만든 검색 로직 （2021-03-08）-----------------------------------------------------------
         if ( result.length == 0 && result2.length == 0 && result3.length == 0 ) {
@@ -1462,8 +1521,6 @@ FullTextSearch.prototype = {
 
         } else if (result.length >= 1 && result2.length >= 1 && result3.length == 0 ) {
             console.log('5번');
-            
-            
             if (result.length == 377) {
                 console.log('5-1번');
                 for (var i = 0; i < result.length; i++) {
@@ -1472,12 +1529,32 @@ FullTextSearch.prototype = {
                 result  = result.filter(function(item) {
                     return item !== null && item !== undefined && item !== '';
                 });
-                // console.log(result2);
-                // result = result2
-                // listFilter(result, result2);
+                if (this.check_bmh[0].length == 1 && this.check_pbsch[0].length == 1) { // bmhとpbsch를 선택했때의 처리
+                    console.log('5-1-1번');
+
+                    console.log('this.bmh:', this.bmh, 'this.pbsch:',this.pbsch);
+                    if (difference.length == 1) { // 만약 겹치는 내용이 없다면 모든 검색 결과는 0을 출력
+                        console.log('5-1-2번');
+                        for (var i = 0; i < result.length; i++) {
+                            delete result[i];
+                        }
+                    } else { // 만약 겹치는 부분이 있다면 필터 적용하기
+                        console.log('5-1-3번');
+                        result = result2
+                        listFilter(result, result3);
+                    }
+                } else {
+                    console.log('5-2-1번');
+                    result = result2
+                }
+            } else if (!this.bmh.includes(this.pbsch)) {
+                console.log('5-2번');
+                result = result3;
+            } else {
+                console.log('5-3번');
+                result = result2;
             }
-            // listFilter(result, result2);
-            result = result2
+            
             
 
         } else if (result.length == 0 && result2.length >= 1 && result3.length >= 1 ) {
@@ -1485,7 +1562,40 @@ FullTextSearch.prototype = {
 
         } else if (result.length >= 1 && result2.length == 0 && result3.length >= 1 ) {
             console.log('7번');
-            listFilter(result, result3);
+            if (result.length == 377) {
+                console.log('7-1번');
+                for (var i = 0; i < result.length; i++) {
+                    delete result[i];
+                }
+                if (this.check_bmh[0].length == 1 && this.check_pbsch[0].length == 1) { // bmhとpbsch를 선택했때의 처리
+                    console.log('7-1-1번');
+
+                    console.log('this.bmh:', this.bmh, 'this.pbsch:',this.pbsch);
+                    if (difference.length == 1) { // 만약 겹치는 내용이 없다면 모든 검색 결과는 0을 출력
+                        console.log('7-1-2번');
+                        for (var i = 0; i < result.length; i++) {
+                            delete result[i];
+                        }
+                    } else { // 만약 겹치는 부분이 있다면 필터 적용하기
+                        console.log('7-1-3번');
+                        result = result2
+                        listFilter(result, result3);
+                    }
+                }
+                result = result3;
+            } else {
+                console.log('7-2번');
+                // console.log('this.bmh:', this.bmh, 'this.pbsch:',this.pbsch);
+
+                if (!this.bmh.includes(this.pbsch)) {
+                    console.log('7-2-1번');
+                    result = result2;
+                } else {
+                    console.log('7-2-2번');
+                    listFilter(result, result3);
+                }
+                
+            }
         } else if (result.length >= 1 && result2.length >= 1 && result3.length >= 1 ) {
             console.log('8번');
             if (result.length == 377) {
@@ -1510,6 +1620,7 @@ FullTextSearch.prototype = {
                 }
             } else {
                 console.log('8-2번');
+                console.log('this.bmh:', this.bmh, 'this.pbsch:',this.pbsch);
                 listFilter(result, result2);
                 result  = result.filter(function(item) {
                     return item !== null && item !== undefined && item !== '';
@@ -1868,16 +1979,29 @@ FullTextSearch.prototype = {
             var d             = this.dataset[num];
 
             
-            if (!(title_dic.includes(this.snippet(d.title, idx_len_title)))) {
-                title_dic.push(this.snippet(d.title, idx_len_title));
-                if (idx_len_title.length > 0) {
+
+            // console.log(idx_len_title.length);
+            if (idx_len_title.length >= 1) {
+                if (!(title_dic.includes(this.snippet(d.title, idx_len_title)))) {
+                    title_dic.push(this.snippet(d.title, idx_len_title));
+                    if (idx_len_title.length > 0) {
+                        buf   += "<div class='' style='padding:10px; font-size:20px; border-bottom:1px solid #b8cad6;'>■ ";
+                        buf += this.snippet(d.title, idx_len_title);
+                        buf += "</div>";
+                    }
+                }
+            } else {
+                if (!(title_dic.includes(d.title))) {
+                    // console.log('키워드 검색시 구분 표시');
+                    title_dic.push(d.title);
                     buf   += "<div class='' style='padding:10px; font-size:20px; border-bottom:1px solid #b8cad6;'>■ ";
-                    buf += this.snippet(d.title, idx_len_title);
+                    buf += d.title;
                     buf += "</div>";
                 }
+                
             }
             
-
+            
             
 
             buf   += "<div class='row'>";
@@ -1930,6 +2054,7 @@ FullTextSearch.prototype = {
             // console.log(d.body);
             if (idx_len_body.length > 0) {
                 buf += this.snippet(d.body, idx_len_body);
+                // buf += d.body;
                 // console.log(d.body);
             } else {
                 
@@ -1950,7 +2075,8 @@ FullTextSearch.prototype = {
             buf   += "<div style='margin-top: 10px; margin-left: 10px;height:100%; width:50px;' class=' columns thumbnail-block'>";
 
             if (d.type == "") {
-                buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
             } else if (d.state == 'A') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
@@ -1981,7 +2107,8 @@ FullTextSearch.prototype = {
             buf   += "<div style='margin: 10px; margin-left: 15px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
 
             if (d.state == "") {
-                buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
             } else if (d.state == 'A') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
@@ -2014,17 +2141,18 @@ FullTextSearch.prototype = {
 
             // 추가 설명이 있을 경우
             if (d.author) {
-                buf   += "<div class='columns' style=' height:100%;'>";
+                buf   += "<div class='columns' style=' height:100%; border:none;border-top:dashed 1px #b8cad6''>";
                 buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
                 // buf += '<br>';
-                buf += "<hr style='margin-top:1px; margin-bottom:7px; border:none;border-top:dashed 1px #b8cad6'>";
+                // buf += "<hr style='margin-top:1px; margin-bottom:7px; border:none;border-top:dashed 1px #b8cad6'>";
                 buf += d.author;
                 buf += "</div>";
             // BMH 判例イメージ
             buf   += "<div style='; margin-left: 10px;height:100%; width:50px;' class=' columns thumbnail-block'>";
 
             if (d.type == "") {
-                buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
             } else if (d.state == 'A') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
@@ -2059,7 +2187,8 @@ FullTextSearch.prototype = {
             buf   += "<div style='margin-left: 15px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
 
             if (d.state == "") {
-                buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
+                buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
             } else if (d.state == 'A') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
