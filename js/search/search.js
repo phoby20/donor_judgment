@@ -1549,7 +1549,7 @@ FullTextSearch.prototype = {
                 }
             } else if (!this.bmh.includes(this.pbsch)) {
                 console.log('5-2번');
-                result = result3;
+                result = result2;
             } else {
                 console.log('5-3번');
                 result = result2;
@@ -2011,25 +2011,27 @@ FullTextSearch.prototype = {
 
             buf   += "<dl>";
 
-            buf += (d.type == 'pdf') ? '<dt class="pdf">' : '<dt>';
+            if (!d.author) {
+                buf += (d.type == 'pdf') ? '<dt class="pdf">' : '<dt>';
 
-            // if (idx_len_title.length > 0) {
-            //     buf += this.snippet(d.title, idx_len_title);
-            // } else {
-            //     buf += (d.title || "無題");
-            // }
+                // if (idx_len_title.length > 0) {
+                //     buf += this.snippet(d.title, idx_len_title);
+                // } else {
+                //     buf += (d.title || "無題");
+                // }
 
-            // buf += '<br>';
-            buf += "</dd>";
+                // buf += '<br>';
+                buf += "</dd>";
 
-            buf += "<p class='itemkey'>";
-            // buf += "<span class='itemkey-head'>[項目]　</span>";
-            if (d.class1) {
-                buf += "<span class='info-data'>" + d.class1 + "</span>";
-            } else {
-                buf += "<span class='itemkey-data'> ― </span>";
+                buf += "<p class='itemkey'>";
+                // buf += "<span class='itemkey-head'>[項目]　</span>";
+                if (d.class1) {
+                    buf += "<span class='info-data'>" + d.class1 + "</span>";
+                } else {
+                    buf += "<span class='itemkey-data'> ― </span>";
+                }
+                buf += "</p>";
             }
-            buf += "</p>";
 
 
 
@@ -2040,31 +2042,49 @@ FullTextSearch.prototype = {
             // buf   += "<div class='nine columns text-block' style='border-left:1px solid #b8cad6;'>";
             buf   += "<div class='nine columns'>";
             buf   += "<div class='columns' style=' height:100%;'>";
-            // buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
-            buf   += "<div class='columns text-block' style='width:650px; min-height: 90px; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
 
 
-            if (d.type == 'pdf') {
-                buf += this.caption.result_pdf;
-            }
-
-      
-            buf += "<dd>";
-
-            // console.log(d.body);
-            if (idx_len_body.length > 0) {
-                buf += this.snippet(d.body, idx_len_body);
-                // buf += d.body;
+            // 「ただし」がない場合のみ表示------2021-03-11
+            if (!d.author) {
+                // buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+                buf   += "<div class='columns text-block' style='width:650px; min-height: 90px; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+                if (d.type == 'pdf') {
+                    buf += this.caption.result_pdf;
+                }
+                buf += "<dd>";
                 // console.log(d.body);
+                if (idx_len_body.length > 0) {
+                    buf += this.snippet(d.body, idx_len_body);
+                    // buf += d.body;
+                    // console.log(d.body);
+                } else {
+                    
+                    // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
+                    buf += d.body;
+                }
+                buf += "</div>";
             } else {
-                
-                // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
-                buf += d.body;
+                // // buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+                // buf   += "<div class='columns text-block' style='width:650px; min-height: 90px; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
+                // if (d.type == 'pdf') {
+                //     buf += this.caption.result_pdf;
+                // }
+                // buf += "<dd>";
+                // // console.log(d.body);
+                // if (idx_len_body.length > 0) {
+                //     buf += this.snippet(d.body, idx_len_body);
+                //     // buf += d.body;
+                //     // console.log(d.body);
+                // } else {
+                    
+                //     // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
+                //     buf += d.body;
+                // }
+                // buf += "</div>";
             }
-
-
-            buf += "</div>";
             
+
+
 
             if (!d.author) {
 
