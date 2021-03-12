@@ -36,7 +36,7 @@ function FullTextSearch()
     var test;        //test
 
     this.charset    = 'UTF-8';
-    this.max        = 50;
+    this.max        = 100; //一つのページで一度に見せるアイテムの数
 
     this.param_name = 'keyword';
     this.param_name2 = 'bmh'; //bmh 検索
@@ -2004,8 +2004,13 @@ FullTextSearch.prototype = {
             
             
 
-            buf   += "<div class='row'>";
-
+            // ------------------------------------------------------------------------------------------ ここ修正要　2021-03-11 ------------------------------------------------------------------------
+            if (!d.author) {
+                buf   += "<div class='row' style='border-top:1px solid #b8cad6 ;'>";
+            } else {
+                buf   += "<div class='row' style='border-bottom:1px solid #eee;'>";
+            }
+            // buf   += "<div class='row' style='border-bottom:1px solid red;'>";
 
             buf   += "<div class='three columns text-block' style='padding-top:20px;'>";
 
@@ -2031,7 +2036,10 @@ FullTextSearch.prototype = {
                     buf += "<span class='itemkey-data'> ― </span>";
                 }
                 buf += "</p>";
+            } else {
+                
             }
+            // ------------------------------------------------------------------------------------------ ここまで ------------------------------------------------------------------------
 
 
 
