@@ -1939,13 +1939,13 @@ FullTextSearch.prototype = {
 
         table_header   += "<div class='row'>";
         
-        table_header   += "<div class='ten columns' style='font-size:20px;'>";
-        table_header   += "<span class='info-head'>　　内容</span>";
+        table_header   += "<div class='ten columns' style='font-size:20px; width:915px;'>";
+        table_header   += "<span class='info-head' style=' margin:0px; padding: 0px;'>　内容</span>";
         table_header   += "</div>";
 
         table_header   += "<div class='two columns'>";
         table_header   += "<p style='font-size:18px;'>　 　     　判定</p>";
-        table_header   += "</div>";
+        // table_header   += "</div>";
 
         table_header   += "<div class='one columns' style='text-align: center; font-size:20px; width:84px;>";
         table_header   += "<span class='info-head'>BMH</span>";
@@ -2059,7 +2059,8 @@ FullTextSearch.prototype = {
                 if (d.type == 'pdf') {
                     buf += this.caption.result_pdf;
                 }
-                buf += "<dd>";
+                // buf += "<dd>";
+                buf += "<p style='text-indent: 1em;'>"; // 들여쓰기
                 // console.log(d.body);
                 if (idx_len_body.length > 0) {
                     buf += this.snippet(d.body, idx_len_body);
@@ -2070,6 +2071,7 @@ FullTextSearch.prototype = {
                     // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
                     buf += d.body;
                 }
+                buf += "<p>";
                 buf += "</div>";
             } else {
                 // // buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
@@ -2105,19 +2107,20 @@ FullTextSearch.prototype = {
             if (d.type == "") {
                 // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
-            } else if (d.state == 'A') {
+            } else if (d.type == 'A') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
                 buf   += "<p class='arrow_box2'>骨髄採取や末梢血幹細胞採取および移植の支障となるような疾患(器質的、精神的)が無いと思われるものは、コーディネートを進める。患者    患者理由で中止となった時のドナー登録は、継続とする。</p>";
-            } else if (d.state == 'B') {
+            } else if (d.type == 'B') {
+                // console.log('d.state');
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_b.png' alt='B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
-            } else if (d.state == 'C') {
+            } else if (d.type == 'C') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>C</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_c.png' alt='C'>";
                 buf   += "<p class='arrow_box2'>当面は全身麻酔下での骨髄採取や末梢血幹細胞採取に支障をきたす可能性があると思われるもの。該当する場合は原則としてコーディネートは中止とする。コーディネートを中止としたものは、本人に通知し、一定期間（原則として１年間）ドナー登録を保留とする。内容によっては、取消とする。</p>";
-            } else if (d.state == 'D') {
+            } else if (d.type == 'D') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
                 buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
@@ -2125,14 +2128,14 @@ FullTextSearch.prototype = {
                 buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
-            } else if (d.state == '-') {
+            } else if (d.type == '-') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
             }
             buf   += "</div>";
 
             // PBSCH 判例イメージ
-            buf   += "<div style='margin: 10px; margin-left: 15px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
+            buf   += "<div style='margin: 10px; margin-left: 30px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
 
             if (d.state == "") {
                 // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
@@ -2181,19 +2184,19 @@ FullTextSearch.prototype = {
             if (d.type == "") {
                 // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
-            } else if (d.state == 'A') {
+            } else if (d.type == 'A') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>A</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_a.png' alt='A'>";
                 buf   += "<p class='arrow_box2'>骨髄採取や末梢血幹細胞採取および移植の支障となるような疾患(器質的、精神的)が無いと思われるものは、コーディネートを進める。患者    患者理由で中止となった時のドナー登録は、継続とする。</p>";
-            } else if (d.state == 'B') {
+            } else if (d.type == 'B') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_b.png' alt='B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
-            } else if (d.state == 'C') {
+            } else if (d.type == 'C') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>C</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_c.png' alt='C'>";
                 buf   += "<p class='arrow_box2'>当面は全身麻酔下での骨髄採取や末梢血幹細胞採取に支障をきたす可能性があると思われるもの。該当する場合は原則としてコーディネートは中止とする。コーディネートを中止としたものは、本人に通知し、一定期間（原則として１年間）ドナー登録を保留とする。内容によっては、取消とする。</p>";
-            } else if (d.state == 'D') {
+            } else if (d.type == 'D') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
                 buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
@@ -2201,7 +2204,7 @@ FullTextSearch.prototype = {
                 buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
-            } else if (d.state == '-') {
+            } else if (d.type == '-') {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>-</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_etc.png' alt='A'>";
             }
@@ -2212,7 +2215,7 @@ FullTextSearch.prototype = {
 
 
             // PBSCH 判例イメージ
-            buf   += "<div style='margin-left: 15px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
+            buf   += "<div style='margin-left: 30px; height: auto%; width:60px;' class=' columns thumbnail-block'>";
 
             if (d.state == "") {
                 // buf   += "<img class='thumbnail-img' src='images/common/noimage.gif' alt='画像はありません'>";
