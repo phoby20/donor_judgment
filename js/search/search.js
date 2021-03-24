@@ -672,7 +672,7 @@ FullTextSearch.prototype = {
     // 一般キーワードが入る
     do_find : function (keyword,bmh,pbsch,check_bmh,check_pbsch,refine1,refine2,yearfrom,yearto,hasimage,class1,class2,class3)
     {
-        // console.log(check_bmh);
+        // console.log(keyword);
         // console.log(check_pbsch);
 
         if (this.lastquery == keyword) return;
@@ -797,6 +797,7 @@ FullTextSearch.prototype = {
         } else {
             reg.push(/(.)/);
         }
+        // console.log(aimai);
         
 
 
@@ -1097,6 +1098,7 @@ FullTextSearch.prototype = {
 
 
 
+            // console.log(keyword);
             //キーワード1語ごとの処理
             for (var j = 0; j < reg.length; j++) {
                 var chk = false;
@@ -1106,12 +1108,40 @@ FullTextSearch.prototype = {
                     d_length += this.dataset[i][d_key[k]].length;
 
                     if (keyword != ""){
-                    //キーワード入力ありの場合
-                        r = this.dataset[i][d_key[k]].match(reg[j]);
+                        // 「服薬中」を選択した時「服薬中、疾患検査中、疾患治療中」のカテゴリのデータが見えないようにフィルタするコード（2021.03.24）
+                        if (class1 == '服薬中') {
+                            if (this.dataset[i][d_key[4]] == class1) {
+                                r = this.dataset[i][d_key[k]].match(reg[j]);
+                            } else {
+                                continue;
+                            }
+                        } else if (class1 == '精神障害') {
+                            if (this.dataset[i][d_key[4]] == class1) {
+                                r = this.dataset[i][d_key[k]].match(reg[j]);
+                            } else {
+                                continue;
+                            }
+                        } else if (class1 == 'ウイルス肝炎') {
+                            if (this.dataset[i][d_key[4]] == class1) {
+                                r = this.dataset[i][d_key[k]].match(reg[j]);
+                            } else {
+                                continue;
+                            }
+                        } else if (class1 == 'CJD') {
+                            if (this.dataset[i][d_key[4]] == class1) {
+                                r = this.dataset[i][d_key[k]].match(reg[j]);
+                            } else {
+                                continue;
+                            }
+                        } else {
+                            r = this.dataset[i][d_key[k]].match(reg[j]);
+                        }
                     } else {
                     //キーワード入力なしの場合
+                    // console.log('キーワード入力ないの場合');
                         r = this.dataset[i][d_key[k]];
                     }
+                    // console.log('!!!!!!!!!!!', d_key[k]);
 
                     //（キーワード以外の）検索条件と一致しているか判定
                     var is_target = this.judge_target(
@@ -1325,6 +1355,7 @@ FullTextSearch.prototype = {
             // console.log(rg_per);
             
             for (var j = 0; j < res.length; j++) {
+                // console.log('res[j][1]', res[j][1]);
                 if (res[j][1] == 'title') {
                     idx_len_title[idx_len_title.length] = [res[j][0].index, res[j][0][0].length];
                 } if (res[j][1] == 'body') {
@@ -1336,6 +1367,11 @@ FullTextSearch.prototype = {
             result[result.length] = [i, idx_len_title, idx_len_body, idx_len_age, rg_len, rg_pos, rg_per, rg_pnt];
             result_original[result.length] = [i, idx_len_title, idx_len_body, idx_len_age, rg_len, rg_pos, rg_per, rg_pnt];
             // console.log(result);
+
+            // console.log(class1);
+            // if (class1 == '服薬中') {
+            //     console.log('!!!!!!!!!!!');
+            // }
 
         
             // BMH 検索時 ------------------------------------- 성공작 (2021.2.10)------------------------------------------------
@@ -1460,7 +1496,10 @@ FullTextSearch.prototype = {
 
 
 
-        // console.log(result.length);
+        // console.log(class1);
+        // if (class1 == '服薬中') {
+        //     console.log('!!!!!!!!!!!');
+        // }
         // if (result.length == 1 ) {
         //     result = result;
         // // } else if (result.length > 1 && result2 <=1) {
@@ -2176,7 +2215,9 @@ FullTextSearch.prototype = {
                 buf   += "<div class='columns text-block' style='width:650px; height:100%; border-left:1px solid #b8cad6; border-right:1px solid #b8cad6;'>";
                 // buf += '<br>';
                 // buf += "<hr style='margin-top:1px; margin-bottom:7px; border:none;border-top:dashed 1px #b8cad6'>";
+                buf += "<p style='text-indent: 1em;'>"; // sub body 들여쓰기 -----------------------------------------------------------------------------------------------------
                 buf += d.author;
+                buf += "<p>";
                 buf += "</div>";
             // BMH 判例イメージ
             buf   += "<div style='; margin-left: 10px;height:100%; width:50px;' class=' columns thumbnail-block'>";
