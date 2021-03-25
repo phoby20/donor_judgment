@@ -2163,7 +2163,7 @@ FullTextSearch.prototype = {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
                 buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
-            } else if (d.type == '【ＤＬＩ】B') {
+            } else if (d.type == '【ＤＬＩ】Ｂ') {
                 buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
@@ -2195,7 +2195,7 @@ FullTextSearch.prototype = {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
                 buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
-            } else if (d.type == '【ＤＬＩ】B') {
+            } else if (d.type == '【ＤＬＩ】Ｂ') {
                 buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
@@ -2241,7 +2241,7 @@ FullTextSearch.prototype = {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
                 buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
-            } else if (d.type == '【ＤＬＩ】B') {
+            } else if (d.type == '【ＤＬＩ】Ｂ') {
                 buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
@@ -2277,7 +2277,7 @@ FullTextSearch.prototype = {
                 buf   += "<p  style='text-align: center; font-size:20px; width:84px;'>D</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_d.png' alt='D'>";
                 buf   += "<p class='arrow_box2'>将来にわたっても骨髄採取や末梢血幹細胞採取により健康上支障をきたしうる疾患、または患者に移行し得る疾患の既往歴があるものは、ドナー不適格とし、コーディネートを中止とする。ドナー候補者には、ドナー登録取消しの手続きをおこなう。<br> ※登録取消しのドナー候補者には、敬意をもって対応すること。</p>";
-            } else if (d.type == '【ＤＬＩ】B') {
+            } else if (d.type == '【ＤＬＩ】Ｂ') {
                 buf   += "<p  style='text-align: center; font-size:16px; width:84px;'>【ＤＬＩ】B</p>";
                 // buf   += "<img style='width:100%; height:100%;' class='thumbnail-img' src='images/common/hantei_dli_b.png' alt='【ＤＬＩ】B'>";
                 buf   += "<p class='arrow_box2'>各ドナーの状況に応じて検討を要するもの。結論が出るまでコーディネートは進めない。確認検査時に「適格」としてコーディネート進行しても、採取前健康診断時に最終結論として不適格となることもある。不適格となった場合は内容によって、ドナー登録は保留(原則として 1 年間)または取消とする。</p>";
