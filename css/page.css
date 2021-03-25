@@ -33,7 +33,7 @@
     line-height: 1.1;
     letter-spacing: 0.5px;
     font-size: 26px;
-    color: #0094b9;
+    color: #00abb1;
     font-weight: bold;
 }
 
@@ -189,7 +189,7 @@
     display: inline-block;
     height: 29px;
     line-height: 29px;
-    background-color: #257a9b;
+    background-color: #00c4cc;
     color: #fff;
 }
 .clearbtn {
@@ -316,7 +316,7 @@ input[type="button"].link:hover {
 }
 
 .navi span.selected {
-    background: #003d66;
+    background: #00c4cc;
     color: #fff;
     font-weight: bold;
 }
@@ -349,7 +349,7 @@ input[type="button"].link:hover {
 #result dt {
     min-height: 20px;
     padding-left: 10px;
-    border-left: 7px solid #005586;
+    border-left: 7px solid #00c4cc;
     font-size: 18px;
 }
 
@@ -549,7 +549,7 @@ ul.keylist li {
 
 .form-block{
     border: 1px #b8d6d6 solid;
-    background-color: #e6eef5;
+    background-color: #00c5cc2a;
 }
 
 .form-block .three.columns{
@@ -568,7 +568,7 @@ ul.keylist li {
     display: table-cell;
     position: relative;
     vertical-align: middle;
-    background-color: #c6e4f1;
+    background-color: #00c5cc5b;
     padding: 8px 30px;
     min-height: 40px;
     line-height: 30px;
@@ -585,25 +585,25 @@ ul.keylist li {
 }
 
 .row:nth-child(1) .th::before{
-    background: #a3daf8;
+    background:#2eb6ff;
 }
 .row:nth-child(2) .th::before{
-    background: #f7c9dd;
+    background: #ff5aa2;
 }
 .row:nth-child(3) .th::before{
-    background: #bbb3d8;
+    background: #7154da;
 }
 .row:nth-child(4) .th::before{
-    background: #b7e2bc;
+    background: #47df59;
 }
 .row:nth-child(5) .th::before{
     background: #fcd7a1;
 }
 .row:nth-child(6) .th::before{
-    background: #fcf18b;
+    background: #ffea2e;
 }
 .row:nth-child(7) .th::before{
-    background: #d7ccc8;
+    background: #da5727;
 }
 
 .td{
