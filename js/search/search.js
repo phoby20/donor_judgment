@@ -2102,9 +2102,9 @@ FullTextSearch.prototype = {
                 buf += "<p style='text-indent: 1em;'>"; // 들여쓰기
                 // console.log(d.body);
                 if (idx_len_body.length > 0) {
-                    buf += this.snippet(d.body, idx_len_body);
-                    // buf += d.body;
-                    // console.log(d.body);
+                    // buf += this.snippet(d.body, idx_len_body);
+                    buf += d.body;
+                    console.log(idx_len_body);
                 } else {
                     
                     // buf += d.body.substr(0, this.result_prefix + this.result_suffix);
@@ -2342,6 +2342,8 @@ FullTextSearch.prototype = {
             var idx   = idx_len[0][0];
             var len   = idx_len[0][1];
             var start = idx_len[0][0] - this.result_prefix;
+            // console.log(start);
+            // console.log(idx);
             return [
                 body.substring(start, idx),
                 "<strong style='background: linear-gradient(to top, yellow 50%, transparent 50%);'>",
