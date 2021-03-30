@@ -6146,7 +6146,7 @@ var data = [
     "class3": "",
     "itemkey": 312,
     "subkey": "",
-    "body": "以下 、 薬物依存の場合は不可<br>       <strong>依存型：</strong>薬 物<br>　<strong>・モルヒネ型：</strong>モルヒネ、ヘロイン、コデイン、オピアール<br><br>　<strong>・アルコール・ バルビタール 型：</strong><br>アルコール、バルビタール、各種睡眠薬・安定剤<br><br>　<strong>・コカイン型：</strong>コカイン<br><br>　<strong>・アンフェタミン型：</strong>アンフェタミン、メタアンフェタミン<br><br>　<strong>・カンナビス型：</strong>大麻、マリファナ、ハッシシュ<br><br>　<strong>・幻覚剤型：</strong>LSD 25 、サイロシビン<br><br>　<strong>・有機溶剤型：</strong>トルエン、キシレン<br><br>　※薬物依存は自己申告とする。",
+    "body": "以下 、 薬物依存の場合は不可<br>       <strong>依存型：</strong>薬 物<br>　<strong>・モルヒネ型：</strong>モルヒネ、ヘロイン、コデイン、オピアール<br><br>　<strong>・アルコール・ バルビタール 型</strong><br>　　　　　：アルコール、バルビタール、各種睡眠薬・安定剤<br><br>　<strong>・コカイン型：</strong>コカイン<br><br>　<strong>・アンフェタミン型：</strong>アンフェタミン、メタアンフェタミン<br><br>　<strong>・カンナビス型：</strong>大麻、マリファナ、ハッシシュ<br><br>　<strong>・幻覚剤型：</strong>LSD 25 、サイロシビン<br><br>　<strong>・有機溶剤型：</strong>トルエン、キシレン<br><br>　※薬物依存は自己申告とする。",
     "author": "",
     "receiver": "",
     "year": "",
