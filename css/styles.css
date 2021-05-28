@@ -294,3 +294,39 @@ img:hover + p.arrow_box {
 img:hover + p.arrow_box2 {
   display: block;
 }
+
+
+
+.result-outer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.custom-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  border: 1px solid blue;
+}
+.hantei-outer {
+  border: 1px solid red;
+  display: flex;
+  height: 100%;
+  width: 26%;
+}
+.hantei {
+  border: 1px solid rgb(169, 255, 212);
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+  
+}
+.hantei-option {
+  border: 1px solid rgb(169, 255, 212);
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+  
+}
+

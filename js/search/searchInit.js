@@ -12,6 +12,7 @@ $(document).ready(function(){
 
      && objFullTextSearch.check_bmh    //bmh
      && objFullTextSearch.check_pbsch    //bmh
+     && objFullTextSearch.chkBox    //bmh
 
      && objFullTextSearch.refine1    //形態
      && objFullTextSearch.refine2    //作成年代
@@ -30,6 +31,7 @@ $(document).ready(function(){
 
         objFullTextSearch.check_bmh.join(" "),
         objFullTextSearch.check_pbsch.join(" "),
+        objFullTextSearch.chkBox.join(" "),
 
         objFullTextSearch.refine1.join(" "),
         objFullTextSearch.refine2.join(" "),
